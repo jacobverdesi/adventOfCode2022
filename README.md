@@ -7,3 +7,4 @@
 
 - David: JavaScript
 - Mikey: Rust
+- Jverdes: C++
