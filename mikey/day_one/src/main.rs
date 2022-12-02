@@ -23,12 +23,13 @@ fn main() -> io::Result<()> {
         }
     }
 
-    let max_cal_elf = elves.iter().max();
+    elves.sort_by(|a, b| b.cmp(a));
+    println!("The most calories one elf has is {}", elves[0]);
 
-    if let Some(elf) = max_cal_elf {
-        println!("The most calories is {}", elf);
-    } else {
-        println!("No elves found");
-    }
+    println!(
+        "The calories of the top three elves is {}",
+        elves.iter().take(3).sum::<i64>()
+    );
+
     Ok(())
 }
