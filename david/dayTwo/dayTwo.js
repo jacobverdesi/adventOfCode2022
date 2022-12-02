@@ -37,7 +37,7 @@ const rpsRounds = co.textFileToArray("./dayTwo.txt");
 // A, X = rock
 // B, Y = paper
 // C, Z = scissors
-const scoreMap1 = { A: 1, B: 2, C: 3, X: 1, Y: 2, Z: 3 };=
+const scoreMap1 = { A: 1, B: 2, C: 3, X: 1, Y: 2, Z: 3 };
 
 console.log(getTotalScore(rpsRounds, scoreMap1, 1));
 
