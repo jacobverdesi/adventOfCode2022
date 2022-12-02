@@ -1,22 +1,5 @@
-use std::env;
-use std::fs::File;
-use std::io::{self, BufRead, Error, ErrorKind};
-
-struct Fail {
-    pub message: String,
-}
-
-impl Fail {
-    fn new(message: String) -> Fail {
-        Fail { message }
-    }
-}
-
-impl From<Fail> for io::Error {
-    fn from(error: Fail) -> Self {
-        Error::new(ErrorKind::Other, error.message)
-    }
-}
+use common::Fail;
+use std::io;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 enum Hand {
@@ -86,7 +69,7 @@ impl Hand {
     }
 }
 
-fn parse_player_one(char: char) -> Result<Hand, Fail> {
+fn parse_opponent_hand(char: char) -> Result<Hand, Fail> {
     match char {
         'A' => Ok(Hand::Rock),
         'B' => Ok(Hand::Paper),
@@ -95,7 +78,7 @@ fn parse_player_one(char: char) -> Result<Hand, Fail> {
     }
 }
 
-fn parse_player_two(char: char) -> Result<Hand, Fail> {
+fn parse_my_hand(char: char) -> Result<Hand, Fail> {
     match char {
         'X' => Ok(Hand::Rock),
         'Y' => Ok(Hand::Paper),
@@ -125,12 +108,8 @@ fn parse_line<A, B>(
 }
 
 fn main() -> io::Result<()> {
-    let args = env::args().collect::<Vec<_>>();
-    let path = args
-        .get(1)
-        .ok_or_else(|| Fail::new("usage: day_one [path]".to_owned()))?;
-    let file = File::open(path)?;
-    let lines = io::BufReader::new(file).lines();
+    let path = common::get_first_arg("usage: day_two [path]")?;
+    let lines = common::open_lines(&path)?;
 
     let mut total_score_1: i64 = 0;
     let mut total_score_2: i64 = 0;
@@ -140,14 +119,16 @@ fn main() -> io::Result<()> {
 
         // Q1 calculation
         {
-            let (p1_hand, p2_hand) = parse_line(&line, parse_player_one, parse_player_two)?;
-            total_score_1 += p2_hand.outcome_from_other_hand(p1_hand).value() + p2_hand.value();
+            let (opponent_hand, my_hand) = parse_line(&line, parse_opponent_hand, parse_my_hand)?;
+            let outcome = my_hand.outcome_from_other_hand(opponent_hand);
+            total_score_1 += outcome.value() + my_hand.value();
         }
 
         // Q2 calculation
         {
-            let (p1_hand, outcome) = parse_line(&line, parse_player_one, parse_outcome)?;
-            total_score_2 += p1_hand.other_hand_from_outcome(outcome).value() + outcome.value();
+            let (opponent_hand, outcome) = parse_line(&line, parse_opponent_hand, parse_outcome)?;
+            let my_hand = opponent_hand.other_hand_from_outcome(outcome);
+            total_score_2 += my_hand.value() + outcome.value();
         }
     }
 
