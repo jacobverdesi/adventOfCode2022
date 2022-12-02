@@ -31,18 +31,19 @@ function getTotalScore(rpsRounds, scoreMap, roundOfPlay) {
   return score;
 }
 
+// parse text inot rounds of play
+const rpsRounds = co.textFileToArray("./dayTwo.txt");
+
 // A, X = rock
 // B, Y = paper
 // C, Z = scissors
-const scoreMap1 = { A: 1, B: 2, C: 3, X: 1, Y: 2, Z: 3 };
-
-const rpsRounds = co.textFileToArray("./dayTwo.txt");
+const scoreMap1 = { A: 1, B: 2, C: 3, X: 1, Y: 2, Z: 3 };=
 
 console.log(getTotalScore(rpsRounds, scoreMap1, 1));
 
-// A, X = rock
-// B, Y = paper
-// C, Z = scissors
+// A=rock, X=scissor, Y=rock, Z=paper
+// B=paper, X=rock,Y=paper, Z=scissor
+// C=scissor, X=paper, Y=scissor, Z=rock
 const scoreMap2 = {
   A: 1,
   B: 2,
