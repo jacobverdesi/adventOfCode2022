@@ -8,9 +8,7 @@ struct Fail {
 
 impl Fail {
     fn new(message: String) -> Fail {
-        Fail {
-            message: message.to_string(),
-        }
+        Fail { message }
     }
 }
 
@@ -21,7 +19,7 @@ impl From<Fail> for io::Error {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-enum RPS {
+enum Hand {
     Rock,
     Paper,
     Scissors,
@@ -52,33 +50,24 @@ impl Outcome {
     }
 }
 
-impl RPS {
+impl Hand {
     fn ordered(&self) -> i64 {
         match self {
-            RPS::Rock => 2,
-            RPS::Scissors => 1,
-            RPS::Paper => 0,
-        }
-    }
-
-    fn from_ordered(v: i64) -> RPS {
-        match v.rem_euclid(3) {
-            2 => RPS::Rock,
-            1 => RPS::Scissors,
-            0 => RPS::Paper,
-            _ => panic!("impossible"),
+            Hand::Rock => 2,
+            Hand::Scissors => 1,
+            Hand::Paper => 0,
         }
     }
 
     fn value(&self) -> i64 {
         match self {
-            RPS::Rock => 1,
-            RPS::Paper => 2,
-            RPS::Scissors => 3,
+            Hand::Rock => 1,
+            Hand::Paper => 2,
+            Hand::Scissors => 3,
         }
     }
 
-    fn outcome(&self, other: RPS) -> Outcome {
+    fn outcome_from_other_hand(&self, other: Hand) -> Outcome {
         match (self.ordered() - other.ordered()).rem_euclid(3) {
             2 => Outcome::Loss,
             1 => Outcome::Win,
@@ -86,26 +75,31 @@ impl RPS {
             _ => panic!("impossible"),
         }
     }
+
+    fn other_hand_from_outcome(&self, outcome: Outcome) -> Hand {
+        match (self.ordered() + outcome.offset()).rem_euclid(3) {
+            2 => Hand::Rock,
+            1 => Hand::Scissors,
+            0 => Hand::Paper,
+            _ => panic!("impossible"),
+        }
+    }
 }
 
-fn hand_to_play(opponent: RPS, outcome: Outcome) -> RPS {
-    RPS::from_ordered(opponent.ordered() + outcome.offset())
-}
-
-fn parse_player_one(char: char) -> Result<RPS, Fail> {
+fn parse_player_one(char: char) -> Result<Hand, Fail> {
     match char {
-        'A' => Ok(RPS::Rock),
-        'B' => Ok(RPS::Paper),
-        'C' => Ok(RPS::Scissors),
+        'A' => Ok(Hand::Rock),
+        'B' => Ok(Hand::Paper),
+        'C' => Ok(Hand::Scissors),
         other => Err(Fail::new(format!("unknown player one value {}", other))),
     }
 }
 
-fn parse_player_two(char: char) -> Result<RPS, Fail> {
+fn parse_player_two(char: char) -> Result<Hand, Fail> {
     match char {
-        'X' => Ok(RPS::Rock),
-        'Y' => Ok(RPS::Paper),
-        'Z' => Ok(RPS::Scissors),
+        'X' => Ok(Hand::Rock),
+        'Y' => Ok(Hand::Paper),
+        'Z' => Ok(Hand::Scissors),
         other => Err(Fail::new(format!("unknown player two value {}", other))),
     }
 }
@@ -119,38 +113,22 @@ fn parse_outcome(char: char) -> Result<Outcome, Fail> {
     }
 }
 
-fn parse_line_part_1(str: &str) -> Result<(RPS, RPS), Fail> {
+fn parse_line<A, B>(
+    str: &str,
+    first_parser: fn(char) -> Result<A, Fail>,
+    second_parser: fn(char) -> Result<B, Fail>,
+) -> Result<(A, B), Fail> {
     match str.chars().collect::<Vec<_>>().as_slice() {
-        [player_one, ' ', player_two] => Ok((
-            parse_player_one(*player_one)?,
-            parse_player_two(*player_two)?,
-        )),
+        [first, ' ', second] => Ok((first_parser(*first)?, second_parser(*second)?)),
         _ => Err(Fail::new(format!("couldn't parse line {}", str))),
     }
-}
-
-fn score_1(round: (RPS, RPS)) -> i64 {
-    round.1.outcome(round.0).value() + round.1.value()
-}
-
-fn parse_line_part_2(str: &str) -> Result<(RPS, Outcome), Fail> {
-    match str.chars().collect::<Vec<_>>().as_slice() {
-        [player_one, ' ', player_two] => {
-            Ok((parse_player_one(*player_one)?, parse_outcome(*player_two)?))
-        }
-        _ => Err(Fail::new(format!("couldn't parse line {}", str))),
-    }
-}
-
-fn score_2(round: (RPS, Outcome)) -> i64 {
-    hand_to_play(round.0, round.1).value() + round.1.value()
 }
 
 fn main() -> io::Result<()> {
     let args = env::args().collect::<Vec<_>>();
     let path = args
         .get(1)
-        .ok_or(Fail::new("usage: day_one [path]".to_owned()))?;
+        .ok_or_else(|| Fail::new("usage: day_one [path]".to_owned()))?;
     let file = File::open(path)?;
     let lines = io::BufReader::new(file).lines();
 
@@ -159,11 +137,18 @@ fn main() -> io::Result<()> {
 
     for try_line in lines {
         let line = try_line?;
-        let round_1 = parse_line_part_1(&line)?;
-        total_score_1 += score_1(round_1);
 
-        let round_2 = parse_line_part_2(&line)?;
-        total_score_2 += score_2(round_2);
+        // Q1 calculation
+        {
+            let (p1_hand, p2_hand) = parse_line(&line, parse_player_one, parse_player_two)?;
+            total_score_1 += p2_hand.outcome_from_other_hand(p1_hand).value() + p2_hand.value();
+        }
+
+        // Q2 calculation
+        {
+            let (p1_hand, outcome) = parse_line(&line, parse_player_one, parse_outcome)?;
+            total_score_2 += p1_hand.other_hand_from_outcome(outcome).value() + outcome.value();
+        }
     }
 
     println!("part 1: {}", total_score_1);
