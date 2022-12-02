@@ -57,7 +57,7 @@ int findMaxCalTop3(const std::list<std::string> &inputStringList) {
 }
 
 int main() {
-    std::list<std::string> inputStringList = readInputFile("../inputDay1.txt");
+    std::list<std::string> inputStringList = readInputFile("../Day1/inputDay1.txt");
     int maxCal = findMaxCal(inputStringList);
     std::cout << "Max Calorie Elf: " << maxCal << '\n';
     int maxCal3 = findMaxCalTop3(inputStringList);
