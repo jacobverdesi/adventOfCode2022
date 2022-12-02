@@ -6,3 +6,4 @@
 
 
 - David: JavaScript
+- Mikey: Rust
