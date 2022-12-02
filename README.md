@@ -7,4 +7,4 @@
 
 - David: JavaScript
 - Mikey: Rust
-- Jverdes: C++
+- Jverdesi: C++
