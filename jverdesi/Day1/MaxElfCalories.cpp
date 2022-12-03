@@ -1,21 +1,12 @@
+//
+// Created by jacob on 12/3/2022.
+//
+
+#include "MaxElfCalories.h"
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <list>
-
-std::list<std::string> readInputFile(const char *inputFileName) {
-    std::list<std::string> stringList;
-    std::ifstream inputFile;
-    std::string line;
-    inputFile.open(inputFileName);
-    if (inputFile.is_open()) {
-        while (inputFile) {
-            std::getline(inputFile, line);
-            stringList.push_back(line);
-        }
-    }
-    return stringList;
-}
+#include "../Utils/FileReader.h"
 
 int findMaxCal(const std::list<std::string> &inputStringList) {
 
@@ -56,8 +47,8 @@ int findMaxCalTop3(const std::list<std::string> &inputStringList) {
     return max3;
 }
 
-int main() {
-    std::list<std::string> inputStringList = readInputFile("../Day1/inputDay1.txt");
+int mainDay1() {
+    std::list<std::string> inputStringList = readInputFile("../Data/inputDay1.txt");
     int maxCal = findMaxCal(inputStringList);
     std::cout << "Max Calorie Elf: " << maxCal << '\n';
     int maxCal3 = findMaxCalTop3(inputStringList);
