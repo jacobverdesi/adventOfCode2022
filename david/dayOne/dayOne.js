@@ -1,16 +1,4 @@
-const fs = require("fs");
-
-
-// func to parse a txt file to an array
-function textFileToArray(text) {
-  try {
-    const data = fs.readFileSync(text, "utf8");
-    return data.split('\n');
-  } catch (err) {
-    console.log(err);
-  }
-}
-
+const co = require("../common")
 
 // function to return sum calories of top three calory carrying elves
 function getElfCalories2(textArray) {
@@ -53,7 +41,7 @@ function getElfCalories(textArray) {
     return maxCalories;
 }
 
-const data =  textFileToArray('./dayOneInput.txt')
+const data =  co.textFileToArray('./dayOneInput.txt')
 
 console.log(getElfCalories(data))
 console.log(getElfCalories2(data))
