@@ -4,57 +4,41 @@ fn main() -> std::io::Result<()> {
     {
         // part one
         let lines = common::open_lines(&path)?;
-        let fully_contained_pairs = lines
-            .filter(|line| {
-                let line = line.as_ref().expect("failed reading line");
-                match line
-                    .split(",")
-                    .map(|assignment| {
-                        assignment
-                            .split("-")
-                            .map(|s| s.parse::<i64>().expect("failed parsing"))
-                    })
-                    .flatten()
-                    .collect::<Vec<_>>()
-                    .as_slice()
-                {
-                    [a1, a2, b1, b2] => (a1 <= b1 && a2 >= b2) || (b1 <= a1 && b2 >= a2),
-                    _ => panic!("failed pattern at line {}", line),
+        let fully_contained_pairs = lines.fold((0, 0), |(part_one, part_two), line| {
+            let line = line.as_ref().expect("failed reading line");
+            match line
+                .split(",")
+                .map(|assignment| {
+                    assignment
+                        .split("-")
+                        .map(|s| s.parse::<i64>().expect("failed parsing"))
+                })
+                .flatten()
+                .collect::<Vec<_>>()
+                .as_slice()
+            {
+                [a1, a2, b1, b2] => {
+                    let fully_contained = (a1 - b1) * (a2 - b2) <= 0; // Suhas came up with this
+                    let partially_contained = !(a2 < b1 || b2 < a1); // And this!
+                    (
+                        if fully_contained {
+                            part_one + 1
+                        } else {
+                            part_one
+                        },
+                        if partially_contained {
+                            part_two + 1
+                        } else {
+                            part_two
+                        },
+                    )
                 }
-            })
-            .count();
+                _ => panic!("failed pattern at line {}", line),
+            }
+        });
 
-        println!("part one: {}", fully_contained_pairs);
-    }
-
-    {
-        // part two
-        let lines = common::open_lines(&path)?;
-        let partially_contained_pairs = lines
-            .filter(|line| {
-                let line = line.as_ref().expect("failed reading line");
-                match line
-                    .split(",")
-                    .map(|assignment| {
-                        assignment
-                            .split("-")
-                            .map(|s| s.parse::<i64>().expect("failed parsing"))
-                    })
-                    .flatten()
-                    .collect::<Vec<_>>()
-                    .as_slice()
-                {
-                    [a1, a2, b1, b2] => {
-                        let r1 = *a1..*a2 + 1;
-                        let r2 = *b1..*b2 + 1;
-                        r1.contains(b1) || r1.contains(b2) || r2.contains(a1) || r2.contains(a2)
-                    }
-                    _ => panic!("failed pattern at line {}", line),
-                }
-            })
-            .count();
-
-        println!("part two: {}", partially_contained_pairs);
+        println!("part one: {}", fully_contained_pairs.0);
+        println!("part two: {}", fully_contained_pairs.1);
     }
 
     Ok(())
