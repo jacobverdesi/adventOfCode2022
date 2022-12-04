@@ -2,7 +2,7 @@
 // Created by jacob on 12/3/2022.
 //
 
-#include "MaxElfCalories.h"
+#include "CalorieCounting.h"
 #include <iostream>
 #include <string>
 #include <list>

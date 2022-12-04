@@ -2,7 +2,7 @@
 #include <list>
 #include <iostream>
 #include "../Utils/FileReader.h"
-#include "RPS.h"
+#include "RockPaperScissors.h"
 
 int getScore(const std::list<std::string> &inputStringList) {
     int totalScore = 0;
@@ -44,41 +44,10 @@ int getScore2(const std::list<std::string> &inputStringList) {
     }
     return totalScore;
 }
-std::list<std::string> modifyRPSGame(const std::list<std::string> &inputStringList) {
-    std::list<std::string> modifiedGame;
-
-    for (std::string line: inputStringList) {
-        if (!line.empty()) {
-            std::cout << line << '\n';
-            switch (line[2]) {
-                case 'X':
-                    if (line[0] == 67)
-                        line[2] = char(line[0] + 21);
-                    else
-                        line[2] = char(line[0] + 24);
-
-                    break;
-                case 'Y':
-                    line[2] = char(line[0] + 23);
-                    break;
-                case 'Z':
-                    break;
-            }
-            std::cout << "  " << line << '\n';
-
-            modifiedGame.push_back(line);
-        }
-
-    }
-    return modifiedGame;
-
-}
-
 
 int mainDay2() {
     std::list<std::string> inputStringList = readInputFile("../Data/inputDay2.txt");
     //printStringList(modifyRPSGame(inputStringList));
-
     int score = getScore(inputStringList);
     std::cout << "Part1 Score: " << score << "\n";
     int score2 = getScore2(inputStringList);
