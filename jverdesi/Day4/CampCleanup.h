@@ -1,0 +1,13 @@
+//
+// Created by jacob on 12/3/2022.
+//
+
+#ifndef ADVENTOFCODE22_CAMPCLEANUP_H
+#define ADVENTOFCODE22_CAMPCLEANUP_H
+
+
+int mainDay4();
+
+
+
+#endif //ADVENTOFCODE22_CAMPCLEANUP_H

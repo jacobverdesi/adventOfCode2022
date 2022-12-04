@@ -5,7 +5,7 @@
 #include "../Utils/InitDay.h"
 using namespace std;
 
-void getScore(const list<string> &inputStringList) {
+void day2Part1(const list<string> &inputStringList) {
     int totalScore = 0;
     for (const string &line: inputStringList) {
         if (!line.empty()) {
@@ -22,7 +22,7 @@ void getScore(const list<string> &inputStringList) {
     cout << "RPS Score: " << totalScore << "\n";
 
 }
-void getScore2(const list<string> &inputStringList) {
+void day2Part2(const list<string> &inputStringList) {
     int totalScore = 0;
     for (const string &line: inputStringList) {
         if (!line.empty()) {
@@ -48,6 +48,6 @@ void getScore2(const list<string> &inputStringList) {
 }
 
 int mainDay2() {
-    initDay(2,&getScore,&getScore2);
+    initDay(2, &day2Part1, &day2Part2);
     return 0;
 }
