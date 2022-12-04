@@ -1,12 +1,13 @@
 #include <string>
 #include <list>
 #include <iostream>
-#include "../Utils/FileReader.h"
 #include "RockPaperScissors.h"
+#include "../Utils/InitDay.h"
+using namespace std;
 
-int getScore(const std::list<std::string> &inputStringList) {
+void getScore(const list<string> &inputStringList) {
     int totalScore = 0;
-    for (const std::string &line: inputStringList) {
+    for (const string &line: inputStringList) {
         if (!line.empty()) {
             unsigned char p1 = line[0] - 65;
             unsigned char p2 = line[2] - 65 - 23;
@@ -18,11 +19,12 @@ int getScore(const std::list<std::string> &inputStringList) {
             }
         }
     }
-    return totalScore;
+    cout << "RPS Score: " << totalScore << "\n";
+
 }
-int getScore2(const std::list<std::string> &inputStringList) {
+void getScore2(const list<string> &inputStringList) {
     int totalScore = 0;
-    for (const std::string &line: inputStringList) {
+    for (const string &line: inputStringList) {
         if (!line.empty()) {
             unsigned char p1 = line[0] - 65;
             unsigned char p2 = line[2] -88;
@@ -42,16 +44,10 @@ int getScore2(const std::list<std::string> &inputStringList) {
             }
         }
     }
-    return totalScore;
+    cout << "RPS Score: " << totalScore << "\n";
 }
 
 int mainDay2() {
-    std::list<std::string> inputStringList = readInputFile("../Data/inputDay2.txt");
-    //printStringList(modifyRPSGame(inputStringList));
-    int score = getScore(inputStringList);
-    std::cout << "Part1 Score: " << score << "\n";
-    int score2 = getScore2(inputStringList);
-    std::cout << "Part2 Score: " << score2 << "\n";
-
+    initDay(2,&getScore,&getScore2);
     return 0;
 }

@@ -5,6 +5,7 @@
 #include "Day1/CalorieCounting.h"
 #include "Day2/RockPaperScissors.h"
 #include "Day3/RucksackReorganization.h"
+using namespace std;
 
 void print_all_answers(){
     mainDay1();
@@ -13,7 +14,7 @@ void print_all_answers(){
 }
 
 int main() {
-    //print_all_answers();
-    mainDay3();
+    print_all_answers();
+    //mainDay2();
     return 0;
 }

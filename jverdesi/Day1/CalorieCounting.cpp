@@ -6,16 +6,16 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "../Utils/FileReader.h"
-
-int findMaxCal(const std::list<std::string> &inputStringList) {
+#include "../Utils/InitDay.h"
+using namespace std;
+void findMaxCal(const list<string> &inputStringList) {
 
     int calorieSum = 0;
     int maxCal = 0;
 
-    for (const std::string &line: inputStringList) {
+    for (const string &line: inputStringList) {
         if (!line.empty()) {
-            calorieSum += std::stoi(line);
+            calorieSum += stoi(line);
         } else {
             if (calorieSum > maxCal) {
                 maxCal = calorieSum;
@@ -24,15 +24,16 @@ int findMaxCal(const std::list<std::string> &inputStringList) {
         }
 
     }
-    return maxCal;
+    cout << "Max Calorie Elf: " << maxCal << '\n';
+
 }
 
-int findMaxCalTop3(const std::list<std::string> &inputStringList) {
+void findMaxCalTop3(const list<string> &inputStringList) {
     int calorieSum = 0;
-    std::list<int> callList;
-    for (const std::string &line: inputStringList) {
+    list<int> callList;
+    for (const string &line: inputStringList) {
         if (!line.empty()) {
-            calorieSum += std::stoi(line);
+            calorieSum += stoi(line);
         } else {
             callList.push_back(calorieSum);
             calorieSum = 0;
@@ -44,15 +45,10 @@ int findMaxCalTop3(const std::list<std::string> &inputStringList) {
         max3 += callList.back();
         callList.pop_back();
     }
-    return max3;
+    cout << "Total Calories of 3 top Elfs: " << max3 << '\n';
 }
 
 int mainDay1() {
-    std::list<std::string> inputStringList = readInputFile("../Data/inputDay1.txt");
-    int maxCal = findMaxCal(inputStringList);
-    std::cout << "Max Calorie Elf: " << maxCal << '\n';
-    int maxCal3 = findMaxCalTop3(inputStringList);
-    std::cout << "Total Calories of 3 top Elfs: " << maxCal3 << '\n';
-
+    initDay(1,&findMaxCal,&findMaxCalTop3);
     return 0;
 }
