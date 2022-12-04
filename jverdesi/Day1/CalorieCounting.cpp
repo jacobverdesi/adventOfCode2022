@@ -8,7 +8,7 @@
 #include <list>
 #include "../Utils/InitDay.h"
 using namespace std;
-void findMaxCal(const list<string> &inputStringList) {
+void day1Part1(const list<string> &inputStringList) {
 
     int calorieSum = 0;
     int maxCal = 0;
@@ -28,7 +28,7 @@ void findMaxCal(const list<string> &inputStringList) {
 
 }
 
-void findMaxCalTop3(const list<string> &inputStringList) {
+void day1Part2(const list<string> &inputStringList) {
     int calorieSum = 0;
     list<int> callList;
     for (const string &line: inputStringList) {
@@ -49,6 +49,6 @@ void findMaxCalTop3(const list<string> &inputStringList) {
 }
 
 int mainDay1() {
-    initDay(1,&findMaxCal,&findMaxCalTop3);
+    initDay(1, &day1Part1, &day1Part2);
     return 0;
 }

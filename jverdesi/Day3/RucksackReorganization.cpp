@@ -28,7 +28,7 @@ int getSingleBitIndex(int64_t input) {
     return idx;
 }
 
-void getSumPriorities(const list<string> &inputStringList) {
+void day3Part1(const list<string> &inputStringList) {
     int totalPriority = 0;
     for (const string &line: inputStringList) {
         if (!line.empty()) {
@@ -43,7 +43,7 @@ void getSumPriorities(const list<string> &inputStringList) {
 
 }
 
-void getSumPrioritiesBadge(const list<string> &inputStringList) {
+void day3Part2(const list<string> &inputStringList) {
     int totalPriority = 0;
     int groupIdx = 0;
     int64_t groupTypes[3];
@@ -64,7 +64,6 @@ void getSumPrioritiesBadge(const list<string> &inputStringList) {
 }
 
 int mainDay3() {
-    initDay(3,&getSumPriorities,&getSumPrioritiesBadge);
-
+    initDay(3, &day3Part1, &day3Part2);
     return 0;
 }
