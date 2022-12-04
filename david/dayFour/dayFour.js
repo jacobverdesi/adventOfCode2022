@@ -42,6 +42,7 @@ function getOverlapppingTasksQuestionTwo(tasks1, tasks2) {
   return 0;
 }
 
+// return the number of task pairs that overlap
 function getOverlappingTasks(tasks, questionOne) {
   result = 0;
   for (let i = 0; i < tasks.length; i++) {
