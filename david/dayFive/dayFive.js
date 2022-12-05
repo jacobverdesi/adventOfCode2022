@@ -69,11 +69,7 @@ function getLastStackItems(textArray, moveLogic) {
   }
   // reverse all stacks to first element read in as the last element in the stack
   stacks.map((i) => i.reverse());
-  for (let i in moves) {
-    // process all moves according to move logic function
-    moveLogic(moves[i], stacks);
-  }
-
+  moves.map(i => moveLogic(i, stacks))
   return stacks.map(i => i[i.length-1]).join("")
 }
 
