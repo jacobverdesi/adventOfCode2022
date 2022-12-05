@@ -67,7 +67,6 @@ fn calculate(lines: Lines<BufReader<File>>, part_two: bool) {
 }
 
 fn main() -> std::io::Result<()> {
-    println!("Hello, world!");
     let path = common::get_first_arg("usage: day_four [path]")?;
     let lines = common::open_lines(&path)?;
     calculate(lines, false);
