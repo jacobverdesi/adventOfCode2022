@@ -38,6 +38,7 @@ function moveStackElementsFromLoader(move, stacks) {
     stacks[moveTo].push(loader.pop());
   }
 }
+
 // process all element moves and read last element from each stack
 function getLastStackItems(textArray, moveLogic) {
   let stacks = [];
