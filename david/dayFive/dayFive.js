@@ -16,7 +16,7 @@ function parseMoveInput(move) {
 }
 
 // move elements from one stack to another (Question 1)
-function modifyStacksUsingPop(move, stacks) {
+function moveStackElements(move, stacks) {
   const itemsToMove = parseInt(move[0], 10);
   const moveFrom = parseInt(move[1], 10) - 1;
   const moveTo = parseInt(move[2], 10) - 1;
@@ -26,7 +26,7 @@ function modifyStacksUsingPop(move, stacks) {
 }
 
 // move elements from one stack to intermediate stack to final stack (Question 2)
-function modifyStacksUsingLoader(move, stacks) {
+function moveStackElementsFromLoader(move, stacks) {
   const itemsToMove = parseInt(move[0], 10);
   const moveFrom = parseInt(move[1], 10) - 1;
   const moveTo = parseInt(move[2], 10) - 1;
@@ -41,7 +41,6 @@ function modifyStacksUsingLoader(move, stacks) {
 
 // process all element moves and read last element from each stack
 function getLastStackItems(textArray, moveLogic) {
-  let result = [];
   let stacks = [];
   let moves = [];
 
@@ -75,13 +74,10 @@ function getLastStackItems(textArray, moveLogic) {
     moveLogic(moves[i], stacks);
   }
 
-  // add last element from all stacks into a final...stack
-  for (let i in stacks) {
-    result.push(stacks[i][stacks[i].length - 1]);
-  }
-  return result.join("");
+  return stacks.map(i => i[i.length-1]).join("")
 }
 
 const input = co.textFileToArray("./dayFive.txt");
-console.log(getLastStackItems(input, modifyStacksUsingPop));
-console.log(getLastStackItems(input, modifyStacksUsingLoader));
+
+console.log(getLastStackItems(input, moveStackElements));
+console.log(getLastStackItems(input, moveStackElementsFromLoader));
