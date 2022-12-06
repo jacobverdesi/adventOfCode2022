@@ -1,6 +1,7 @@
 const common = require("../common");
 
-function getStartOfPacket(text, numToFind) {
+// returns the character at the end of n unique characters 
+function getEndOfPacket(text, numToFind) {
   for (let i = 0; i < text.length; i++) {
     try {
         let charToEval = new Set();
@@ -18,5 +19,5 @@ function getStartOfPacket(text, numToFind) {
 
 const text = common.textToString("./daySix.txt");
 
-console.log(getStartOfPacket(text, 4));
-console.log(getStartOfPacket(text, 14));
+console.log(getEndOfPacket(text, 4));
+console.log(getEndOfPacket(text, 14));
