@@ -12,7 +12,7 @@ function getEndOfPacket(text, numToFind) {
         return i + numToFind;
       }
     } catch (error) {
-      concolse.log(error);
+      console.log(error);
     }
   }
 }
