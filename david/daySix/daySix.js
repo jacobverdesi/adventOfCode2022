@@ -1,0 +1,22 @@
+const common = require("../common");
+
+function getStartOfPacket(text, numToFind) {
+  for (let i = 0; i < text.length; i++) {
+    try {
+        let charToEval = new Set();
+        for (let j = i; j < numToFind + i; j++) {
+            charToEval.add(text[j])
+        }
+      if (charToEval.size > numToFind - 1) {
+        return i + numToFind;
+      }
+    } catch (error) {
+      concolse.log(error);
+    }
+  }
+}
+
+const text = common.textToString("./daySix.txt");
+
+console.log(getStartOfPacket(text, 4));
+console.log(getStartOfPacket(text, 14));
