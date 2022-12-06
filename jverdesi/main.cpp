@@ -18,7 +18,7 @@ void print_all_answers(){
 }
 
 int main() {
- print_all_answers();
-   // mainDay4();
+//print_all_answers();
+   mainDay5();
     return 0;
 }
