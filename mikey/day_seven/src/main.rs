@@ -31,47 +31,31 @@ fn build_directory(lines: &[String], current_line: &mut usize, current_directory
     let mut finished = false;
 
     while !finished {
-        if let Some(line) = lines.get(*current_line) {
-            let split_line = line.split(" ").collect::<Vec<_>>();
-            match &split_line[..] {
-                ["$", "ls"] => {
-                    *current_line += 1;
-                }
-                ["$", "cd", ".."] => {
-                    *current_line += 1;
-                    finished = true;
-                }
-                ["$", "cd", _] => {
-                    current_directory
-                        .children
-                        .push(Node::Directory(Directory::new()));
-                    let idx = current_directory.children.len() - 1;
-                    let next_directory = match current_directory.children.get_mut(idx) {
-                        Some(Node::Directory(x)) => x,
-                        _ => panic!("expected directory at the end of current directory"),
-                    };
-                    *current_line += 1;
-                    build_directory(lines, current_line, next_directory);
-                    current_directory.size += next_directory.size;
-                }
-                ["dir", _] => {
-                    *current_line += 1;
-                }
-                [size_str, _filename] => {
-                    let size = size_str
-                        .parse::<u64>()
-                        .expect(&format!("couldn't parse size {}", size_str));
-                    current_directory.children.push(Node::File(size));
-                    current_directory.size += size;
-                    *current_line += 1;
-                }
-                _ => {
-                    *current_line += 1;
-                    finished = true;
+        match lines.get(*current_line) {
+            None => finished = true,
+            Some(line) => {
+                *current_line += 1;
+                let words = line.split(" ").collect::<Vec<_>>();
+                match &words[..] {
+                    ["$", "cd", ".."] => finished = true,
+                    ["$", "cd", _] => {
+                        let mut next_directory = Directory::new();
+                        build_directory(lines, current_line, &mut next_directory);
+                        current_directory.size += next_directory.size;
+                        current_directory
+                            .children
+                            .push(Node::Directory(next_directory));
+                    }
+                    ["$", "ls"] => {}
+                    ["dir", _] => {}
+                    [size_str, _filename] => {
+                        let size = size_str.parse::<u64>().expect("couldn't parse size");
+                        current_directory.size += size;
+                        current_directory.children.push(Node::File(size));
+                    }
+                    _ => finished = true,
                 }
             }
-        } else {
-            finished = true;
         }
     }
 }
