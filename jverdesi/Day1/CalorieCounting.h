@@ -1,0 +1,12 @@
+//
+// Created by jacob on 12/3/2022.
+//
+
+#ifndef ADVENTOFCODE22_CALORIECOUNTING_H
+#define ADVENTOFCODE22_CALORIECOUNTING_H
+
+
+int mainDay1();
+
+
+#endif //ADVENTOFCODE22_CALORIECOUNTING_H
