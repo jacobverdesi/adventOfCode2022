@@ -76,23 +76,39 @@ def parse_filesystem(terminal):
     return filesystem
 
 
+def get_directory_sizes(directory, name):
+    sizes = []
+    for key, value in directory.items():
+        if isinstance(value, dict):
+            subsystem = value
+            sizes += get_directory_sizes(directory=subsystem, name=key)
+        elif key == SIZE_KEY:
+            sizes.append((name, value))
+    return sizes
+
+
 def score_1(filesystem):
-    def __get_directory_sizes(directory):
-        sizes = []
-        for key, value in directory.items():
-            if isinstance(value, dict):
-                subsystem = value
-                sizes += __get_directory_sizes(subsystem)
-            elif key == SIZE_KEY:
-                sizes.append(value)
-        return sizes
-
-    return sum(filter(lambda x: x <= 100000, __get_directory_sizes(filesystem)))
+    return sum(
+        x[1] for x in get_directory_sizes(filesystem, name="root") if x[1] <= 100_000
+    )
 
 
-def score_2(filesystem, space_needed=30_000_000):
-    current_size = filesystem[SIZE_KEY]
-    to_free_up = space_needed - current_size
+def score_2(filesystem, space_needed=30_000_000, total_size=70_000_000):
+    filesystem_size = filesystem[SIZE_KEY]
+    to_free_up = space_needed - (total_size - filesystem_size)
+
+    if to_free_up <= 0:
+        return None
+
+    best_directory = "/"
+    best_directory_size = filesystem_size
+    for directory, size in get_directory_sizes(filesystem, name="root"):
+        extra_space = size - to_free_up
+        if 0 <= extra_space < best_directory_size - to_free_up:
+            best_directory = directory
+            best_directory_size = size
+
+    return best_directory_size
 
 
 def main():
@@ -101,7 +117,7 @@ def main():
 
     filesystem = parse_filesystem(terminal)
     answer_one = score_1(filesystem)
-    answer_two = score_2()
+    answer_two = score_2(filesystem)
     print(f"Answer one: {answer_one}")
     print(f"Answer two: {answer_two}")
 
