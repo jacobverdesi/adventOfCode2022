@@ -8,14 +8,21 @@ struct Directory {
     children: Vec<Node>,
 }
 
-fn calc_part_1(directory: &Directory, total: &mut u64) {
-    if directory.size <= 100000 {
-        *total += directory.size;
+impl Directory {
+    fn new() -> Directory {
+        Directory {
+            size: 0,
+            children: Vec::new(),
+        }
     }
+}
+
+fn all_directory_sizes(directory: &Directory, sizes: &mut Vec<u64>) {
+    sizes.push(directory.size);
     for i in 0..directory.children.len() {
         match &directory.children[i] {
             Node::File(_) => {}
-            Node::Directory(d) => calc_part_1(&d, total),
+            Node::Directory(d) => all_directory_sizes(&d, sizes),
         }
     }
 }
@@ -27,16 +34,17 @@ fn build_directory(lines: &[String], current_line: &mut usize, current_directory
         if let Some(line) = lines.get(*current_line) {
             let split_line = line.split(" ").collect::<Vec<_>>();
             match &split_line[..] {
-                ["$", "ls"] => *current_line += 1,
+                ["$", "ls"] => {
+                    *current_line += 1;
+                }
                 ["$", "cd", ".."] => {
                     *current_line += 1;
                     finished = true;
                 }
                 ["$", "cd", _] => {
-                    current_directory.children.push(Node::Directory(Directory {
-                        children: Vec::new(),
-                        size: 0,
-                    }));
+                    current_directory
+                        .children
+                        .push(Node::Directory(Directory::new()));
                     let idx = current_directory.children.len() - 1;
                     let next_directory = match current_directory.children.get_mut(idx) {
                         Some(Node::Directory(x)) => x,
@@ -46,7 +54,9 @@ fn build_directory(lines: &[String], current_line: &mut usize, current_directory
                     build_directory(lines, current_line, next_directory);
                     current_directory.size += next_directory.size;
                 }
-                ["dir", _] => *current_line += 1,
+                ["dir", _] => {
+                    *current_line += 1;
+                }
                 [size_str, _filename] => {
                     let size = size_str
                         .parse::<u64>()
@@ -72,14 +82,29 @@ fn main() -> std::io::Result<()> {
         .map(|line| line.expect("error parsing line"))
         .collect::<Vec<_>>();
 
-    let mut root = Directory {
-        size: 0,
-        children: Vec::new(),
-    };
+    let mut root = Directory::new();
     build_directory(&lines, &mut 0, &mut root);
-    let mut total: u64 = 0;
-    calc_part_1(&root, &mut total);
-    println!("{}", total);
+
+    let mut sizes: Vec<u64> = Vec::new();
+    all_directory_sizes(&root, &mut sizes);
+
+    // part one
+    let part_one_total = sizes
+        .clone()
+        .into_iter()
+        .filter(|x| *x <= 100000)
+        .sum::<u64>();
+    println!("part one: {}", part_one_total);
+
+    // part two
+    let target_size = 70000000 - 30000000;
+    let current_size: u64 = root.size;
+    let mut part_two_candidate_set = sizes
+        .into_iter()
+        .filter(|x| *x > current_size - target_size)
+        .collect::<Vec<_>>();
+    part_two_candidate_set.sort();
+    println!("part two: {}", part_two_candidate_set[0]);
 
     Ok(())
 }
