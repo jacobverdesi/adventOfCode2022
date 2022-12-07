@@ -1,0 +1,12 @@
+//
+// Created by jacob on 12/6/2022.
+//
+
+#ifndef ADVENTOFCODE22_TUNINGTROUBLE_H
+#define ADVENTOFCODE22_TUNINGTROUBLE_H
+
+
+int mainDay6();
+
+
+#endif //ADVENTOFCODE22_TUNINGTROUBLE_H

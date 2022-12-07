@@ -1,0 +1,11 @@
+//
+// Created by jacob on 12/4/2022.
+//
+
+#ifndef ADVENTOFCODE22_SUPPLYSTACKS_H
+#define ADVENTOFCODE22_SUPPLYSTACKS_H
+
+
+int mainDay5();
+
+#endif //ADVENTOFCODE22_SUPPLYSTACKS_H
