@@ -1,11 +1,6 @@
-enum Node {
-    File(u64),
-    Directory(Directory),
-}
-
 struct Directory {
     size: u64,
-    children: Vec<Node>,
+    children: Vec<Directory>,
 }
 
 impl Directory {
@@ -20,10 +15,7 @@ impl Directory {
 fn all_directory_sizes(directory: &Directory, sizes: &mut Vec<u64>) {
     sizes.push(directory.size);
     for i in 0..directory.children.len() {
-        match &directory.children[i] {
-            Node::File(_) => {}
-            Node::Directory(d) => all_directory_sizes(&d, sizes),
-        }
+        all_directory_sizes(&directory.children[i], sizes);
     }
 }
 
@@ -42,16 +34,13 @@ fn build_directory(lines: &[String], current_line: &mut usize, current_directory
                         let mut next_directory = Directory::new();
                         build_directory(lines, current_line, &mut next_directory);
                         current_directory.size += next_directory.size;
-                        current_directory
-                            .children
-                            .push(Node::Directory(next_directory));
+                        current_directory.children.push(next_directory);
                     }
                     ["$", "ls"] => {}
                     ["dir", _] => {}
                     [size_str, _filename] => {
                         let size = size_str.parse::<u64>().expect("couldn't parse size");
                         current_directory.size += size;
-                        current_directory.children.push(Node::File(size));
                     }
                     _ => finished = true,
                 }
