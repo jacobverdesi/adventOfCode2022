@@ -1,8 +1,8 @@
 fn get_marker(string: &str, num_distinct: usize) -> Option<usize> {
     for (i, _) in string.chars().enumerate() {
         if i >= (num_distinct - 1) {
-            let prev_four = &string[usize::max(0, i - (num_distinct - 1))..(i + 1)];
-            let mut chars = prev_four.chars().collect::<Vec<_>>();
+            let candidate_set = &string[i - (num_distinct - 1)..(i + 1)];
+            let mut chars = candidate_set.chars().collect::<Vec<_>>();
             chars.sort();
             chars.dedup();
             if chars.len() == num_distinct {
