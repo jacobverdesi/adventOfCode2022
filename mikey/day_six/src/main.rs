@@ -1,13 +1,11 @@
+use std::collections::HashSet;
+
 fn get_marker(string: &str, num_distinct: usize) -> Option<usize> {
-    for (i, _) in string.chars().enumerate() {
-        if i >= (num_distinct - 1) {
-            let candidate_set = &string[i - (num_distinct - 1)..(i + 1)];
-            let mut chars = candidate_set.chars().collect::<Vec<_>>();
-            chars.sort();
-            chars.dedup();
-            if chars.len() == num_distinct {
-                return Some(i);
-            }
+    for i in num_distinct - 1..string.len() {
+        let candidate_string = &string[i - (num_distinct - 1)..(i + 1)];
+        let set = candidate_string.chars().collect::<HashSet<_>>();
+        if set.len() == num_distinct {
+            return Some(i);
         }
     }
     None
