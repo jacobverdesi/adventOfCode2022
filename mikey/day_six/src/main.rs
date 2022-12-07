@@ -19,7 +19,7 @@ fn main() -> std::io::Result<()> {
     let first_line = lines.get(0).expect("must have at least one line");
 
     let first_answer = get_marker(&first_line, 4).expect("no result for answer 1");
-    let second_answer = get_marker(&first_line, 14).expect("no result for answer 1");
+    let second_answer = get_marker(&first_line, 14).expect("no result for answer 2");
 
     println!("first answer: {}", first_answer + 1);
     println!("second answer: {}", second_answer + 1);
