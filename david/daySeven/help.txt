@@ -1,0 +1,305 @@
+{
+  '/': {
+    parent: null,
+    size: 44359867,
+    children: [ 'fpljqj', 'gsdsbld', 'hbmjtb', 'nfn', 'qmrsvfvw', 'svgbqd' ]
+  },
+  fpljqj: {
+    parent: '/',
+    size: 6362034,
+    children: [
+      'gqvmv',    'fpljqj',   'fzbppql',
+      'jpqqr',    'lzq',      'pjjbmllm',
+      'qmrsvfvw', 'tgfvcpp',  'zwtz',
+      'btsdth',   'fwdw',     'nqfdhlcg',
+      'qmrsvfvw', 'qmrsvfvw', 'tdnp',
+      'vhtwd',    'wnlzd',    'ztttgd',
+      'jmfqmdcm', 'nqfdhlcg', 'swrdzl'
+    ]
+  },
+  gsdsbld: {
+    parent: '/',
+    size: 20616860,
+    children: [ 'npmncvhh', 'qmrsvfvw', 'sqtnlr', 'vzndpc' ]
+  },
+  npmncvhh: {
+    parent: 'gsdsbld',
+    size: 12304108,
+    children: [ 'mphhrqf', 'rnmvggfd' ]
+  },
+  mphhrqf: {
+    parent: 'npmncvhh',
+    size: 11155261,
+    children: [ 'qlcfs', 'zwsnwvnv' ]
+  },
+  qlcfs: {
+    parent: 'mphhrqf',
+    size: 8873850,
+    children: [ 'htwl', 'lqjhfdch', 'nqfdhlcg', 'zfl', 'zlqgr' ]
+  },
+  htwl: { parent: 'qlcfs', size: 268134, children: [] },
+  lqjhfdch: { parent: 'qlcfs', size: 21479, children: [] },
+  nqfdhlcg: {
+    parent: 'qlcfs',
+    size: 2843878,
+    children: [ 'dhjfqv', 'wjv', 'lnwtl', 'htnw' ]
+  },
+  dhjfqv: { parent: 'nqfdhlcg', size: 135074, children: [] },
+  zfl: {
+    parent: 'qlcfs',
+    size: 2202517,
+    children: [
+      'hwlhshtr', 'sphpbjt',
+      'tvfhvbp',  'fpljqj',
+      'jcffb',    'jzl',
+      'nzlv',     'vmzghf',
+      'nnschfl',  'qmrsvfvw',
+      'szlbls',   'rgvgqqd'
+    ]
+  },
+  zlqgr: {
+    parent: 'qlcfs',
+    size: 1276856,
+    children: [ 'crs', 'whrm', 'zfl' ]
+  },
+  crs: { parent: 'zlqgr', size: 220281, children: [] },
+  whrm: { parent: 'zlqgr', size: 1056575, children: [ 'pjzpqs' ] },
+  pjzpqs: { parent: 'whrm', size: 776779, children: [ 'smz' ] },
+  smz: { parent: 'pjzpqs', size: 407600, children: [ 'tdwqpg' ] },
+  tdwqpg: { parent: 'smz', size: 157907, children: [] },
+  hwlhshtr: { parent: 'zfl', size: 90468, children: [] },
+  zwsnwvnv: { parent: 'npmncvhh', size: 363633, children: [] },
+  rnmvggfd: {
+    parent: 'gsdsbld',
+    size: 839881,
+    children: [ 'czzrdvc', 'fcsjqg', 'fwdprwpq', 'tvglfb' ]
+  },
+  czzrdvc: { parent: 'rnmvggfd', size: 2835, children: [ 'blplbjpw' ] },
+  blplbjpw: { parent: 'czzrdvc', size: 2835, children: [] },
+  fcsjqg: { parent: 'rnmvggfd', size: 81548, children: [] },
+  fwdprwpq: { parent: 'rnmvggfd', size: 477376, children: [ 'zfl' ] },
+  sphpbjt: { parent: 'zfl', size: 31414, children: [] },
+  tvglfb: { parent: 'mphhrqf', size: 383166, children: [] },
+  qmrsvfvw: {
+    parent: 'gsdsbld',
+    size: 5124070,
+    children: [
+      'fpljqj',   'zcgfg',
+      'bzcfzh',   'vsrgqmlt',
+      'zbthlb',   'bql',
+      'dwc',      'fpljqj',
+      'hllbt',    'nqfdhlcg',
+      'bdn',      'fpljqj',
+      'hwgbwqmm', 'nwhl'
+    ]
+  },
+  gqvmv: { parent: 'fpljqj', size: 175614, children: [] },
+  zcgfg: { parent: '/', size: 680789, children: [ 'fpglbth', 'pfjz' ] },
+  fpglbth: { parent: 'zcgfg', size: 58850, children: [] },
+  pfjz: { parent: 'zcgfg', size: 197076, children: [] },
+  sqtnlr: { parent: '/', size: 1127536, children: [ 'ngr' ] },
+  ngr: {
+    parent: 'sqtnlr',
+    size: 168253,
+    children: [ 'fdhd', 'hwsqqt', 'qmrsvfvw' ]
+  },
+  fdhd: { parent: 'ngr', size: 168253, children: [ 'fpljqj' ] },
+  hwsqqt: { parent: '/', size: 174820, children: [] },
+  vzndpc: { parent: '/', size: 183360, children: [] },
+  hbmjtb: {
+    parent: '/',
+    size: 493357,
+    children: [ 'lndmtm', 'sgt', 'tgjszvsg', 'ztrvv' ]
+  },
+  lndmtm: { parent: 'hbmjtb', size: 0, children: [ 'fpljqj', 'hscwh', 'wjv' ] },
+  hscwh: { parent: '/', size: 281901, children: [ 'qgz', 'qmrsvfvw' ] },
+  qgz: { parent: 'hscwh', size: 281901, children: [] },
+  wjv: { parent: '/', size: 1278908, children: [ 'fpljqj', 'qmrsvfvw' ] },
+  fzbppql: { parent: '/', size: 29399, children: [] },
+  jpqqr: { parent: '/', size: 45275, children: [] },
+  lzq: { parent: '/', size: 180833, children: [] },
+  pjjbmllm: { parent: '/', size: 247746, children: [] },
+  bzcfzh: { parent: 'qmrsvfvw', size: 270737, children: [] },
+  vsrgqmlt: { parent: 'qmrsvfvw', size: 0, children: [ 'nqfdhlcg' ] },
+  zbthlb: { parent: '/', size: 295875, children: [ 'hjp', 'twfw', 'zfl' ] },
+  hjp: { parent: 'zbthlb', size: 20745, children: [] },
+  twfw: { parent: 'zbthlb', size: 275130, children: [ 'csmmbjhp' ] },
+  csmmbjhp: { parent: 'twfw', size: 275130, children: [] },
+  tvfhvbp: { parent: 'zfl', size: 292031, children: [] },
+  sgt: { parent: '/', size: 525763, children: [] },
+  tgjszvsg: { parent: '/', size: 98354, children: [] },
+  ztrvv: {
+    parent: '/',
+    size: 1182584,
+    children: [ 'fghl', 'fpljqj', 'qmrsvfvw' ]
+  },
+  fghl: { parent: 'ztrvv', size: 507302, children: [ 'lgpwpmzp', 'sqjqg' ] },
+  lgpwpmzp: { parent: 'fghl', size: 507302, children: [ 'ctr', 'nqfdhlcg' ] },
+  ctr: { parent: 'lgpwpmzp', size: 227863, children: [] },
+  sqjqg: { parent: 'mphhrqf', size: 354565, children: [] },
+  tgfvcpp: { parent: 'fpljqj', size: 111454, children: [ 'bhq' ] },
+  bhq: { parent: 'tgfvcpp', size: 111454, children: [] },
+  zwtz: { parent: 'fpljqj', size: 644233, children: [ 'tcnv' ] },
+  tcnv: { parent: 'zwtz', size: 286997, children: [] },
+  nfn: {
+    parent: '/',
+    size: 1220194,
+    children: [ 'fqw', 'mpz', 'qmrsvfvw', 'zfl' ]
+  },
+  fqw: { parent: 'nfn', size: 339932, children: [] },
+  mpz: {
+    parent: 'nfn',
+    size: 880262,
+    children: [ 'gntjg', 'jfbhz', 'vpgpz', 'zfl' ]
+  },
+  gntjg: {
+    parent: 'mpz',
+    size: 872427,
+    children: [ 'hdq', 'hvcdpzr', 'lth', 'qmrsvfvw', 'scncl' ]
+  },
+  hdq: { parent: 'gntjg', size: 153428, children: [ 'jwhnt' ] },
+  jwhnt: { parent: 'hdq', size: 153428, children: [] },
+  hvcdpzr: {
+    parent: 'gntjg',
+    size: 691997,
+    children: [ 'fpljqj', 'pmcpnqrr', 'wvvzbt' ]
+  },
+  pmcpnqrr: {
+    parent: '/',
+    size: 1057660,
+    children: [ 'nwjzld', 'tfdcg', 'vwlbtgnh' ]
+  },
+  nwjzld: { parent: 'pmcpnqrr', size: 74948, children: [] },
+  tfdcg: {
+    parent: 'pmcpnqrr',
+    size: 982712,
+    children: [ 'lcdfdmlj', 'pthwnf' ]
+  },
+  lcdfdmlj: { parent: 'tfdcg', size: 52503, children: [] },
+  pthwnf: { parent: 'tfdcg', size: 176935, children: [] },
+  vwlbtgnh: { parent: 'pmcpnqrr', size: 0, children: [ 'nqfdhlcg' ] },
+  lnwtl: { parent: 'nqfdhlcg', size: 252540, children: [] },
+  wvvzbt: { parent: 'npmncvhh', size: 50029, children: [] },
+  lth: {
+    parent: 'gsdsbld',
+    size: 700987,
+    children: [ 'dmbf', 'ndbcrvw', 'shsgqzn' ]
+  },
+  dmbf: { parent: 'lth', size: 238504, children: [ 'zpggmccr' ] },
+  zpggmccr: { parent: 'dmbf', size: 238504, children: [] },
+  ndbcrvw: { parent: 'lth', size: 374408, children: [ 'zfl' ] },
+  shsgqzn: { parent: 'mphhrqf', size: 245999, children: [] },
+  bql: { parent: 'qmrsvfvw', size: 93199, children: [] },
+  scncl: {
+    parent: 'gsdsbld',
+    size: 627315,
+    children: [ 'dcldv', 'fsrznscl', 'prcgb' ]
+  },
+  dcldv: { parent: 'scncl', size: 271970, children: [] },
+  fsrznscl: { parent: 'scncl', size: 250577, children: [ 'bcdrv' ] },
+  bcdrv: { parent: 'fsrznscl', size: 250577, children: [] },
+  prcgb: { parent: 'scncl', size: 69766, children: [] },
+  jfbhz: { parent: '/', size: 286498, children: [] },
+  vpgpz: { parent: '/', size: 284277, children: [] },
+  btsdth: { parent: 'fpljqj', size: 176953, children: [] },
+  fwdw: { parent: 'fpljqj', size: 775708, children: [ 'mbgzf', 'rqdnjfdq' ] },
+  mbgzf: { parent: 'fwdw', size: 179220, children: [] },
+  rqdnjfdq: { parent: 'fwdw', size: 204152, children: [] },
+  dwc: {
+    parent: 'qmrsvfvw',
+    size: 970460,
+    children: [ 'htpt', 'hwg', 'nslrrrfg', 'psgw', 'wjlfgt' ]
+  },
+  htpt: { parent: 'dwc', size: 162107, children: [] },
+  hwg: { parent: 'dwc', size: 376410, children: [ 'gslvrbt', 'qmrsvfvw' ] },
+  gslvrbt: { parent: 'hwg', size: 376410, children: [ 'fjwn' ] },
+  fjwn: { parent: 'gslvrbt', size: 268653, children: [] },
+  nslrrrfg: {
+    parent: '/',
+    size: 475377,
+    children: [ 'hjgbgq', 'jctqdpq', 'qgfb', 'zfl' ]
+  },
+  hjgbgq: { parent: 'nslrrrfg', size: 124947, children: [] },
+  jctqdpq: { parent: 'nslrrrfg', size: 203489, children: [] },
+  qgfb: { parent: 'nslrrrfg', size: 33980, children: [] },
+  vmzghf: { parent: 'zfl', size: 235035, children: [] },
+  psgw: { parent: 'mphhrqf', size: 270108, children: [] },
+  wjlfgt: { parent: 'mphhrqf', size: 201399, children: [] },
+  jcffb: { parent: '/', size: 81815, children: [] },
+  jzl: { parent: '/', size: 213196, children: [ 'shrf' ] },
+  shrf: { parent: 'jzl', size: 57545, children: [] },
+  nzlv: {
+    parent: '/',
+    size: 1755559,
+    children: [ 'qwjpjw', 'rhbtbjp', 'rlmzs', 'wwnnj' ]
+  },
+  qwjpjw: {
+    parent: 'nzlv',
+    size: 1457204,
+    children: [ 'dpwp', 'fzdcjr', 'nmnbv', 'nqfdhlcg', 'plzdzdnm', 'sgpcqqm' ]
+  },
+  dpwp: { parent: 'qwjpjw', size: 308672, children: [] },
+  fzdcjr: { parent: 'qwjpjw', size: 236058, children: [] },
+  nmnbv: { parent: 'qwjpjw', size: 215145, children: [] },
+  plzdzdnm: { parent: 'qlcfs', size: 243979, children: [] },
+  sgpcqqm: { parent: 'qlcfs', size: 703626, children: [ 'nzhlcl', 'zfl' ] },
+  nzhlcl: { parent: 'sgpcqqm', size: 169531, children: [ 'wcfl' ] },
+  wcfl: { parent: 'nzhlcl', size: 169531, children: [] },
+  rhbtbjp: {
+    parent: 'npmncvhh',
+    size: 232788,
+    children: [ 'nqfdhlcg', 'zfvbc' ]
+  },
+  zfvbc: { parent: 'qlcfs', size: 19204, children: [] },
+  rlmzs: { parent: 'mphhrqf', size: 238420, children: [] },
+  wwnnj: { parent: 'mphhrqf', size: 476547, children: [] },
+  tdnp: {
+    parent: 'gsdsbld',
+    size: 939604,
+    children: [ 'gdsqdtw', 'tpcbjc', 'zfl' ]
+  },
+  gdsqdtw: { parent: 'tdnp', size: 461422, children: [] },
+  tpcbjc: { parent: 'tdnp', size: 431246, children: [] },
+  nnschfl: { parent: 'zfl', size: 139948, children: [] },
+  bdn: { parent: 'qmrsvfvw', size: 253561, children: [] },
+  hwgbwqmm: { parent: '/', size: 133673, children: [] },
+  nwhl: {
+    parent: '/',
+    size: 788330,
+    children: [ 'mqzrmjr', 'vdjgqfc', 'zfzfbq' ]
+  },
+  mqzrmjr: { parent: 'nwhl', size: 452075, children: [ 'fpljqj', 'qmrsvfvw' ] },
+  vdjgqfc: { parent: '/', size: 383969, children: [] },
+  zfzfbq: { parent: '/', size: 222502, children: [ 'bwmrf', 'zfl' ] },
+  bwmrf: { parent: 'zfzfbq', size: 222502, children: [] },
+  szlbls: { parent: 'gsdsbld', size: 10968, children: [] },
+  vhtwd: { parent: '/', size: 188024, children: [] },
+  wnlzd: {
+    parent: '/',
+    size: 1315402,
+    children: [ 'mcnnsv', 'mctpdbs', 'tjqfts' ]
+  },
+  mcnnsv: {
+    parent: 'wnlzd',
+    size: 902089,
+    children: [ 'lclgj', 'sjdbnbqw', 'tlj', 'wjv' ]
+  },
+  lclgj: { parent: 'mcnnsv', size: 258363, children: [] },
+  sjdbnbqw: { parent: 'mcnnsv', size: 460279, children: [] },
+  tlj: { parent: 'mcnnsv', size: 183447, children: [] },
+  mctpdbs: { parent: '/', size: 120327, children: [] },
+  tjqfts: { parent: '/', size: 458699, children: [ 'crvw' ] },
+  crvw: { parent: 'tjqfts', size: 458699, children: [] },
+  ztttgd: { parent: '/', size: 247914, children: [] },
+  hllbt: { parent: '/', size: 750165, children: [ 'qsg' ] },
+  qsg: { parent: 'hllbt', size: 0, children: [ 'drm', 'fpljqj', 'wjv' ] },
+  drm: { parent: 'qsg', size: 0, children: [ 'fhzr' ] },
+  fhzr: { parent: 'drm', size: 0, children: [ 'nqfdhlcg' ] },
+  jmfqmdcm: { parent: 'fpljqj', size: 773215, children: [] },
+  swrdzl: { parent: 'qlcfs', size: 613746, children: [ 'fgmtnt', 'pnmz' ] },
+  fgmtnt: { parent: 'swrdzl', size: 223081, children: [] },
+  pnmz: { parent: 'swrdzl', size: 110479, children: [] },
+  htnw: { parent: 'nqfdhlcg', size: 203521, children: [] },
+  rgvgqqd: { parent: 'zfl', size: 26778, children: [] },
+  svgbqd: { parent: 'gsdsbld', size: 69927, children: [] }
+}
