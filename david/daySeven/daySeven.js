@@ -20,7 +20,8 @@ function getDirectorySizes(input) {
         } 
         currentDir = lineItems[2];
       } else if (lineItems[2] == "..") {
-        currentDir = directories[currentDir]["parent"];
+        parentDir = directories[currentDir]["parent"];
+        currentDir = parentDir
       }
     } else if (lineItems[0] == "dir") {
       directories[currentDir]["children"].push(lineItems[1]);
@@ -39,13 +40,13 @@ function getDirectorySizes(input) {
   return directories;
 }
 
-function getDirSize(directories, root) {
+function updateDirSizes(directories, root) {
   let children = directories[root]["children"];
   if (children.length < 1) {
     return directories[root]["size"];
   }
   for (let i in children) {
-    directories[root]["size"] += getDirSize(directories, children[i]);
+    directories[root]["size"] += updateDirSizes(directories, children[i]);
   }
   return directories[root]["size"];
 }
@@ -65,6 +66,6 @@ const input = common.textFileToArray("./sample.txt");
 
 const directories = getDirectorySizes(input);
 // console.log(directories);
-getDirSize(directories, "/");
-// console.log(directories)
+updateDirSizes(directories, "/");
+console.log(directories)
 console.log(getSumOfSmallDirectories(directories, 100000));
