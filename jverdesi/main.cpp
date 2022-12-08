@@ -8,6 +8,7 @@
 #include "Day4/CampCleanup.h"
 #include "Day5/SupplyStacks.h"
 #include "Day6/TuningTrouble.h"
+#include "Day7/NoSpaceLeftOnDevice.h"
 
 void print_all_answers(){
     mainDay1();
@@ -16,6 +17,8 @@ void print_all_answers(){
     mainDay4();
     mainDay5();
     mainDay6();
+    mainDay7();
+
 
 }
 
