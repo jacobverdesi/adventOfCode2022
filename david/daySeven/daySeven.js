@@ -7,8 +7,6 @@ function getDirectorySizes(input) {
   for (let line in input) {
     const lineItems = input[line].split(" ");
     if (lineItems[1] == "cd") {
-      console.log(lineItems);
-
       if (lineItems[2] != "..") {
         if (lineItems[2] == "/") {
           currentDir = "/";
@@ -19,14 +17,11 @@ function getDirectorySizes(input) {
             size: 0,
             children: [],
           };
-        } else {
-          console.log(directories[lineItems[2]])
-        }
+        } 
         currentDir = lineItems[2];
       } else if (lineItems[2] == "..") {
         currentDir = directories[currentDir]["parent"];
       }
-      // console.log(currentDir);
     } else if (lineItems[0] == "dir") {
       directories[currentDir]["children"].push(lineItems[1]);
       if (!directories.hasOwnProperty(lineItems[1])) {
@@ -39,14 +34,8 @@ function getDirectorySizes(input) {
     } else if (lineItems[0] != "$") {
       let fileSize = parseInt(lineItems[0], 10);
       directories[currentDir]["size"] += fileSize;
-      // let parent = directories[currentDir]["parent"];
-      // while (parent != null) {
-      //   directories[parent]["size"] += fileSize;
-      //   parent = directories[parent]["parent"];
-      // }
     }
   }
-
   return directories;
 }
 
