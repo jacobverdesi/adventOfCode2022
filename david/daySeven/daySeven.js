@@ -1,5 +1,6 @@
 const common = require("../common");
 
+// populate directory map
 function getDirectorySizes(input) {
   let directories = {};
   directories["/"] = { parent: null, size: 0, children: [] };
@@ -32,7 +33,7 @@ function getDirectorySizes(input) {
           children: [],
         };
       }
-    } else if (lineItems[0] != "$") {
+    } else if (lineItems[0] != "$" & lineItems[0] != "dir") {
       let fileSize = parseInt(lineItems[0], 10);
       directories[currentDir]["size"] += fileSize;
     }
@@ -40,6 +41,7 @@ function getDirectorySizes(input) {
   return directories;
 }
 
+// recursive update of file sizes
 function updateDirSizes(directories, root) {
   let children = directories[root]["children"];
   if (children.length < 1) {
@@ -51,6 +53,7 @@ function updateDirSizes(directories, root) {
   return directories[root]["size"];
 }
 
+// get all directories of specified sizes
 function getSumOfSmallDirectories(directories, limit) {
   let sum = 0;
   for (const directory in directories) {
