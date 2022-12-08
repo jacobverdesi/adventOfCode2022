@@ -9,33 +9,12 @@ impl Forest {
         Forest { rows, cols }
     }
 
-    fn trees_visible(&self) -> u64 {
-        let mut count = 0;
-
-        for y in 0..self.rows.len() {
-            for x in 0..self.cols.len() {
-                if self.is_visible(x, y) {
-                    count += 1
-                }
-            }
+    fn walk(&self) -> ForestWalker {
+        ForestWalker {
+            x: 0,
+            y: 0,
+            forest: self,
         }
-
-        count
-    }
-
-    fn max_scenic_score(&self) -> u64 {
-        let mut max = 0;
-
-        for y in 0..self.rows.len() {
-            for x in 0..self.cols.len() {
-                let score = self.scenic_score(x, y);
-                if max < score {
-                    max = score;
-                }
-            }
-        }
-
-        max
     }
 
     fn is_visible(&self, x: usize, y: usize) -> bool {
@@ -57,6 +36,7 @@ impl Forest {
         let row_max = self.rows.len();
         let col_max = self.cols.len();
         let item = self.rows[y][x];
+
         Self::distance_to_block(item, &self.rows[y][0..x], true) * // left
         Self::distance_to_block(item, &self.rows[y][(x+1)..row_max], false) * // right
         Self::distance_to_block(item, &self.cols[x][0..y], true) * // top
@@ -83,6 +63,33 @@ impl Forest {
     }
 }
 
+struct ForestWalker<'a> {
+    x: usize,
+    y: usize,
+    forest: &'a Forest,
+}
+
+impl<'a> Iterator for ForestWalker<'a> {
+    type Item = (usize, usize);
+
+    fn next(&mut self) -> Option<(usize, usize)> {
+        let x = self.x;
+        let y = self.y;
+
+        if x < self.forest.cols.len() && y < self.forest.rows.len() {
+            if x + 1 < self.forest.cols.len() {
+                self.x += 1;
+            } else {
+                self.x = 0;
+                self.y += 1;
+            }
+            Some((x, y))
+        } else {
+            None
+        }
+    }
+}
+
 fn transpose<T>(v: &Vec<Vec<T>>) -> Vec<Vec<T>>
 where
     T: Clone,
@@ -106,8 +113,21 @@ fn main() -> std::io::Result<()> {
 
     let forest = Forest::from_rows(rows);
 
-    println!("part one: {}", forest.trees_visible());
-    println!("part two: {}", forest.max_scenic_score());
+    println!(
+        "part one: {}",
+        forest
+            .walk()
+            .filter(|(x, y)| forest.is_visible(*x, *y))
+            .count()
+    );
+    println!(
+        "part two: {}",
+        forest
+            .walk()
+            .map(|(x, y)| forest.scenic_score(x, y))
+            .max()
+            .expect("no trees!")
+    );
 
     Ok(())
 }
