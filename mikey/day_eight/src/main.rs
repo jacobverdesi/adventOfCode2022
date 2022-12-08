@@ -23,6 +23,21 @@ impl Forest {
         count
     }
 
+    fn max_scenic_score(&self) -> u64 {
+        let mut max = 0;
+
+        for y in 0..self.rows.len() {
+            for x in 0..self.cols.len() {
+                let score = self.scenic_score(x, y);
+                if max < score {
+                    max = score;
+                }
+            }
+        }
+
+        max
+    }
+
     fn is_visible(&self, x: usize, y: usize) -> bool {
         let row_max = self.rows.len();
         let col_max = self.cols.len();
@@ -38,8 +53,33 @@ impl Forest {
         Self::largest_in_slice(item, &self.cols[x][(y+1)..col_max]) // bottom
     }
 
-    fn largest_in_slice(i: u32, slice: &[u32]) -> bool {
-        slice.iter().max().expect("slice must be non-empty") < &i
+    fn scenic_score(&self, x: usize, y: usize) -> u64 {
+        let row_max = self.rows.len();
+        let col_max = self.cols.len();
+        let item = self.rows[y][x];
+        Self::distance_to_block(item, &self.rows[y][0..x], true) * // left
+        Self::distance_to_block(item, &self.rows[y][(x+1)..row_max], false) * // right
+        Self::distance_to_block(item, &self.cols[x][0..y], true) * // top
+        Self::distance_to_block(item, &self.cols[x][(y+1)..col_max], false) // bottom
+    }
+
+    fn largest_in_slice(tree: u32, slice: &[u32]) -> bool {
+        slice.iter().max().expect("slice must be non-empty") < &tree
+    }
+
+    fn distance_to_block(tree: u32, slice: &[u32], reverse: bool) -> u64 {
+        let len = slice.len();
+        for i in 0..len {
+            let candidate = if reverse {
+                slice[(len - 1) - i]
+            } else {
+                slice[i]
+            };
+            if candidate >= tree {
+                return i as u64 + 1;
+            }
+        }
+        len as u64
     }
 }
 
@@ -67,6 +107,7 @@ fn main() -> std::io::Result<()> {
     let forest = Forest::from_rows(rows);
 
     println!("part one: {}", forest.trees_visible());
+    println!("part two: {}", forest.max_scenic_score());
 
     Ok(())
 }
