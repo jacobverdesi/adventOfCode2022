@@ -68,16 +68,6 @@ function getSumOfSmallDirectories(directories, limit) {
   return sum;
 }
 
-// get all space of all directories
-function getTotalSpace(directories) {
-  let sum = 0;
-  for (const directory in directories) {
-    let size = directories[directory]["size"];
-      sum += size;
-    }
-    return sum;
-  }
-
 // find folders to delete
 function freeSpace(totalSpace, spaceToFree, directories) {
   const totalUsedSpace = directories['/']["size"]
@@ -87,7 +77,7 @@ function freeSpace(totalSpace, spaceToFree, directories) {
   return getSmallestDirectoryToFree(directories, limit)
 }
 
-
+// return smallest amount to free
 function getSmallestDirectoryToFree(directories, space) {
   let dirs = [];
   for (const directory in directories) {
@@ -106,5 +96,6 @@ const input = common.textFileToArray("./daySeven.txt");
 const directories = getDirectorySizes(input);
 
 updateDirSizes(directories, "/");
+
 console.log(getSumOfSmallDirectories(directories, 100000));
 console.log(freeSpace(70000000,30000000,directories))
