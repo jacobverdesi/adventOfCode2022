@@ -11,29 +11,32 @@ function getDirectorySizes(input) {
       if (lineItems[2] != "..") {
         if (lineItems[2] == "/") {
           currentDir = "/";
+        } else if (lineItems[2] != "..") {
+          newDir = currentDir + lineItems[2] + "/";
+          if (!directories.hasOwnProperty(newDir)) {
+            directories[newDir] = {
+              parent: currentDir,
+              size: 0,
+              children: [],
+            };
+          }
+          currentDir = newDir;
         }
-        if (!directories.hasOwnProperty(lineItems[2])) {
-          directories[lineItems[2]] = {
-            parent: currentDir,
-            size: 0,
-            children: [],
-          };
-        } 
-        currentDir = lineItems[2];
-      } else if (lineItems[2] == "..") {
+      } else {
         parentDir = directories[currentDir]["parent"];
-        currentDir = parentDir
+        currentDir = parentDir;
       }
     } else if (lineItems[0] == "dir") {
-      directories[currentDir]["children"].push(lineItems[1]);
-      if (!directories.hasOwnProperty(lineItems[1])) {
-        directories[lineItems[1]] = {
+      newDir = currentDir + lineItems[1] + "/";
+      directories[currentDir]["children"].push(newDir);
+      if (!directories.hasOwnProperty(newDir)) {
+        directories[newDir] = {
           parent: currentDir,
           size: 0,
           children: [],
         };
       }
-    } else if (lineItems[0] != "$" & lineItems[0] != "dir") {
+    } else if ((lineItems[0] != "$") & (lineItems[0] != "dir")) {
       let fileSize = parseInt(lineItems[0], 10);
       directories[currentDir]["size"] += fileSize;
     }
@@ -65,10 +68,10 @@ function getSumOfSmallDirectories(directories, limit) {
   return sum;
 }
 
-const input = common.textFileToArray("./sample.txt");
+const input = common.textFileToArray("./daySeven.txt");
 
 const directories = getDirectorySizes(input);
 // console.log(directories);
 updateDirSizes(directories, "/");
-console.log(directories)
+console.log(directories);
 console.log(getSumOfSmallDirectories(directories, 100000));
