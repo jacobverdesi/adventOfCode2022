@@ -52,10 +52,10 @@ fn move_tail(head: &Pos, old_tail: Pos) -> Pos {
     }
 }
 
-fn get_move(command: &str) -> (Dir, i64) {
+fn get_move(command: &str) -> (Dir, usize) {
     match command.split(" ").collect::<Vec<_>>().as_slice() {
         [dir, num] => {
-            let n = str::parse::<i64>(num).expect("error parsing num");
+            let n = str::parse::<usize>(num).expect("error parsing num");
             match *dir {
                 "R" => (Right, n),
                 "U" => (Up, n),
@@ -89,24 +89,51 @@ fn move_head(head: Pos, dir: Dir) -> Pos {
     }
 }
 
-fn main() -> std::io::Result<()> {
-    let path = common::get_first_arg("usage: day_09 [path]")?;
-    let lines = common::open_lines(&path)?.map(|line| line.expect("error reading line"));
-
-    let mut visits = Visits::new();
-    let mut head: Pos = Pos::new();
-    let mut tail: Pos = Pos::new();
-
-    for line in lines {
-        let (dir, n) = get_move(&line);
-        for _ in 0..n {
-            head = move_head(head, dir);
-            tail = move_tail(&head, tail);
-            visits.insert(tail.clone());
-        }
+fn run_snake(commands: &[String], length: usize, visits: &mut Visits) -> Vec<Pos> {
+    let mut snake = Vec::<Pos>::new();
+    for _ in 0..length {
+        snake.push(Pos::new());
     }
 
-    println!("{}", visits.len());
+    for command in commands {
+        let (dir, n) = get_move(command);
+        for _ in 0..n {
+            for i in 0..length {
+                if i == 0 {
+                    let old_head = snake[0].clone();
+                    snake[0] = move_head(old_head, dir);
+                } else {
+                    let old_tail = snake[i].clone();
+                    snake[i] = move_tail(&snake[i - 1], old_tail);
+                }
+                if i == (length - 1) {
+                    visits.insert(snake[i].clone());
+                }
+            }
+        }
+    }
+    snake
+}
+
+fn main() -> std::io::Result<()> {
+    let path = common::get_first_arg("usage: day_09 [path]")?;
+    let lines = common::open_lines(&path)?
+        .map(|line| line.expect("error reading line"))
+        .collect::<Vec<_>>();
+
+    {
+        // part 1
+        let mut visits = Visits::new();
+        run_snake(lines.as_slice(), 2, &mut visits);
+        println!("part 1 {}", visits.len());
+    }
+
+    {
+        // part 2
+        let mut visits = Visits::new();
+        run_snake(lines.as_slice(), 10, &mut visits);
+        println!("part 2 {}", visits.len());
+    }
 
     Ok(())
 }
