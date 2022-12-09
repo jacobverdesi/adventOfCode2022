@@ -9,10 +9,9 @@
 #include <cstring>
 #include "../Utils/InitDay.h"
 #include "../Utils/StackHelper.h"
-#include "Day5.h"
+#include "SupplyStacks.h"
 
 using namespace std;
-
 
 
 void day5Part1(const list<string> &inputStringList) {
