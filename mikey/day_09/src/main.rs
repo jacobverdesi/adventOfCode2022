@@ -24,16 +24,9 @@ impl Pos {
 
 type Visits = HashSet<Pos>;
 
-fn bounded<T>(el: T, max: T, min: T) -> T
-where
-    T: Ord,
-{
-    std::cmp::max(std::cmp::min(el, max), min)
-}
-
 fn move_tail(head: &Pos, old_tail: Pos) -> Pos {
-    let diff_x = bounded(head.x - old_tail.x, 2, -2);
-    let diff_y = bounded(head.y - old_tail.y, 2, -2);
+    let diff_x = head.x - old_tail.x;
+    let diff_y = head.y - old_tail.y;
     let dir_x = if diff_x.is_negative() { -1 } else { 1 };
     let dir_y = if diff_y.is_negative() { -1 } else { 1 };
     let moves_x = if diff_x.abs() * (diff_x.abs() + (diff_y.abs() - 1)) > 1 {
@@ -89,30 +82,29 @@ fn move_head(head: Pos, dir: Dir) -> Pos {
     }
 }
 
-fn run_snake(commands: &[String], length: usize, visits: &mut Visits) -> Vec<Pos> {
+fn run_snake(commands: &[String], snake_length: usize) -> Visits {
     let mut snake = Vec::<Pos>::new();
-    for _ in 0..length {
+    let mut visits = Visits::new();
+    for _ in 0..snake_length {
         snake.push(Pos::new());
     }
 
     for command in commands {
         let (dir, n) = get_move(command);
         for _ in 0..n {
-            for i in 0..length {
+            for i in 0..snake_length {
                 if i == 0 {
-                    let old_head = snake[0].clone();
-                    snake[0] = move_head(old_head, dir);
+                    snake[0] = move_head(snake[0].clone(), dir);
                 } else {
-                    let old_tail = snake[i].clone();
-                    snake[i] = move_tail(&snake[i - 1], old_tail);
+                    snake[i] = move_tail(&snake[i - 1], snake[i].clone());
                 }
-                if i == (length - 1) {
+                if i == (snake_length - 1) {
                     visits.insert(snake[i].clone());
                 }
             }
         }
     }
-    snake
+    visits
 }
 
 fn main() -> std::io::Result<()> {
@@ -121,19 +113,8 @@ fn main() -> std::io::Result<()> {
         .map(|line| line.expect("error reading line"))
         .collect::<Vec<_>>();
 
-    {
-        // part 1
-        let mut visits = Visits::new();
-        run_snake(lines.as_slice(), 2, &mut visits);
-        println!("part 1 {}", visits.len());
-    }
-
-    {
-        // part 2
-        let mut visits = Visits::new();
-        run_snake(lines.as_slice(), 10, &mut visits);
-        println!("part 2 {}", visits.len());
-    }
+    println!("part 1 {}", run_snake(lines.as_slice(), 2).len());
+    println!("part 2 {}", run_snake(lines.as_slice(), 10).len());
 
     Ok(())
 }
