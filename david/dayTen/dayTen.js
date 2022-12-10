@@ -29,6 +29,26 @@ function trackCyclesAndValueX(commands, cyclesToRecord) {
   return cyclesToRecordDict;
 }
 
+function checkLimit(cycles, currentCycle, X, crt, limit) {
+    if (cycles == limit) {
+        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
+          currentCycle += "#";
+        } else {
+          currentCycle += ".";
+        }
+        crt.push(currentCycle);
+        currentCycle = "";
+        cycles = 0;
+      } else {
+        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
+          currentCycle += "#";
+        } else {
+          currentCycle += ".";
+        }
+      }
+      return [cycles, currentCycle, X, crt]
+}
+
 function drawCrt(commands) {
   let crt = [];
   let currentCycle = "";
@@ -40,57 +60,12 @@ function drawCrt(commands) {
 
     if (command[0] == "noop") {
       cycles += 1;
-      if (cycles == 40) {
-        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-          currentCycle += "#";
-        } else {
-          currentCycle += ".";
-        }
-        crt.push(currentCycle);
-        currentCycle = "";
-        cycles = 0;
-      } else {
-        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-          currentCycle += "#";
-        } else {
-          currentCycle += ".";
-        }
-      }
+      [cycles, currentCycle, X, crt] = checkLimit(cycles, currentCycle, X, crt, 40)
     } else if (command[0] == "addx") {
       cycles += 1;
-      if (cycles == 40) {
-        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-          currentCycle += "#";
-        } else {
-          currentCycle += ".";
-        }
-        crt.push(currentCycle);
-        currentCycle = "";
-        cycles = 0;
-      } else {
-        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-          currentCycle += "#";
-        } else {
-          currentCycle += ".";
-        }
-      }
+      [cycles, currentCycle, X, crt] = checkLimit(cycles, currentCycle, X, crt, 40)
       cycles += 1;
-      if (cycles == 40) {
-        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-          currentCycle += "#";
-        } else {
-          currentCycle += ".";
-        }
-        crt.push(currentCycle);
-        currentCycle = "";
-        cycles = 0;
-      } else {
-        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-          currentCycle += "#";
-        } else {
-          currentCycle += ".";
-        }
-      }
+      [cycles, currentCycle, X, crt] = checkLimit(cycles, currentCycle, X, crt, 40)
       X += parseInt(command[1], 10);
     }
   }
