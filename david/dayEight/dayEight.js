@@ -28,7 +28,7 @@ function getTreeRowsAndColumns(treeMap) {
   return [treeRows, treeColumns];
 }
 
-// adds 'i+j' if is a row input and 'j+i' if it is a columns
+// adds 'i+j' if is a row input and 'j+i' if it is a column input
 function addToVisibleTrees(visibleTrees, i, j, isRow) {
   if (isRow) {
     visibleTrees.add(i.toString() + j.toString());
@@ -40,12 +40,12 @@ function addToVisibleTrees(visibleTrees, i, j, isRow) {
 function getVisibleTreesFromRows(rows, isRow = true) {
   let visibleTrees = new Set();
   for (let i = 0; i < Object.keys(rows).length; i++) {
-    // add all from first row
+    // add all from first row/column
     if (i == 0) {
       for (let j in rows[i]) {
         addToVisibleTrees(visibleTrees, i, j, isRow)
       }
-      // add all from last row
+      // add all from last row/column
     } else if (i == Object.keys(rows).length - 1) {
       for (let j in rows[i]) {
         addToVisibleTrees(visibleTrees, i, j, isRow)
@@ -53,7 +53,7 @@ function getVisibleTreesFromRows(rows, isRow = true) {
     } else {
       // iterate forward and add when greater then the max element
       let maxElement = rows[i][0];
-      for (let j = 1; j < rows[i].length -1; j++) {
+      for (let j = 1; j < rows[i].length - 1; j++) {
         if (rows[i][j] > maxElement) {
           addToVisibleTrees(visibleTrees, i, j, isRow)
           maxElement = rows[i][j]
@@ -74,9 +74,9 @@ function getVisibleTreesFromRows(rows, isRow = true) {
 
 function getVisibleTrees(treeMap) {
   const rowsAndColumns = getTreeRowsAndColumns(buildTreeMap(treeMap));
-  let rows = getVisibleTreesFromRows(rowsAndColumns[0]);
-  let columns = getVisibleTreesFromRows(rowsAndColumns[1], false);
-  let visibleTrees = new Set([...rows, ...columns]);
+  const rows = getVisibleTreesFromRows(rowsAndColumns[0]);
+  const columns = getVisibleTreesFromRows(rowsAndColumns[1], false);
+  const visibleTrees = new Set([...rows, ...columns]);
   return visibleTrees.size;
 }
 
