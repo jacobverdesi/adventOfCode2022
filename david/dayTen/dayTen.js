@@ -34,7 +34,6 @@ function drawCrt(commands) {
   let currentCycle = "";
   let X = 1;
   let cycles = 0;
-  let rounds = 0;
 
   for (let i in commands) {
     let command = commands[i].split(" ");
@@ -43,57 +42,55 @@ function drawCrt(commands) {
       cycles += 1;
       if (cycles == 40) {
         if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-            currentCycle += "#";
-          } else {
-            currentCycle += ".";
-          }
+          currentCycle += "#";
+        } else {
+          currentCycle += ".";
+        }
         crt.push(currentCycle);
         currentCycle = "";
-        rounds += 1;
         cycles = 0;
-    }
-      if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-        currentCycle += "#";
       } else {
-        currentCycle += ".";
+        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
+          currentCycle += "#";
+        } else {
+          currentCycle += ".";
+        }
       }
     } else if (command[0] == "addx") {
       cycles += 1;
       if (cycles == 40) {
         if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-            currentCycle += "#";
-          } else {
-            currentCycle += ".";
-          }
+          currentCycle += "#";
+        } else {
+          currentCycle += ".";
+        }
         crt.push(currentCycle);
         currentCycle = "";
-        rounds += 1;
         cycles = 0;
-    } else {
-      if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-        currentCycle += "#";
       } else {
-        currentCycle += ".";
+        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
+          currentCycle += "#";
+        } else {
+          currentCycle += ".";
+        }
       }
-    }
       cycles += 1;
       if (cycles == 40) {
         if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-            currentCycle += "#";
-          } else {
-            currentCycle += ".";
-          }
+          currentCycle += "#";
+        } else {
+          currentCycle += ".";
+        }
         crt.push(currentCycle);
         currentCycle = "";
-        rounds += 1;
         cycles = 0;
-    } else {
-      if (cycles == X || cycles == X + 1 || cycles == X + 2) {
-        currentCycle += "#";
       } else {
-        currentCycle += ".";
+        if (cycles == X || cycles == X + 1 || cycles == X + 2) {
+          currentCycle += "#";
+        } else {
+          currentCycle += ".";
+        }
       }
-    }
       X += parseInt(command[1], 10);
     }
   }
@@ -111,4 +108,4 @@ for (let key in cyclesOne) {
 }
 
 console.log(answerOne);
-console.log(drawCrt(commands))
+console.log(drawCrt(commands));
