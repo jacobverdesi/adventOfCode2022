@@ -20,16 +20,35 @@ fn main() -> std::io::Result<()> {
         }
     }
 
-    let interesting = [20, 60, 100, 140, 180, 220];
+    {
+        // part one
+        let interesting = [20, 60, 100, 140, 180, 220];
 
-    let answer: i64 = cycles
-        .iter()
-        .enumerate()
-        .map(|(i, reg)| (i + 1, reg))
-        .filter(|(i, _)| interesting.contains(i))
-        .map(|(i, reg)| (i as i64) * reg)
-        .sum();
-    println!("part one: {}", answer);
+        let answer: i64 = cycles
+            .iter()
+            .enumerate()
+            .map(|(i, reg)| (i + 1, reg))
+            .filter(|(i, _)| interesting.contains(i))
+            .map(|(i, reg)| (i as i64) * reg)
+            .sum();
+        println!("part one: {}", answer);
+    }
+
+    {
+        // part two
+        for (index, reg) in cycles.iter().enumerate() {
+            let position = index % 40;
+            let sprite = (reg - 1)..(reg + 2);
+            if sprite.contains(&(position as i64)) {
+                print!("#")
+            } else {
+                print!(".")
+            }
+            if position == 39 {
+                println!();
+            }
+        }
+    }
 
     Ok(())
 }
