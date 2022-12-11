@@ -12,9 +12,8 @@
 
 using namespace std;
 
-void day7Part1(const list<string> &inputStringList) {
+map<string, int> getDirectorySizeMapping(const list<string> &inputStringList) {
     map<string, int> dirs;
-    dirs["/"] = 0;
     vector<string> current_path;
     for (string line: inputStringList) {
         if (!line.empty()) {
@@ -23,6 +22,9 @@ void day7Part1(const list<string> &inputStringList) {
                     if (line[2] == 'c') {
                         if (line[5] != '.') {
                             string cd_into = strrchr(line.c_str(), ' ') + 1;
+                            while (dirs.find(cd_into) != dirs.end()) {
+                                cd_into.append("*"); //avoid collisions
+                            }
                             current_path.push_back(cd_into);
                         } else {
                             current_path.pop_back();
@@ -34,8 +36,8 @@ void day7Part1(const list<string> &inputStringList) {
                 }
                 case 'd': {
                     string new_dir = strrchr(line.c_str(), ' ') + 1;
-                    if (dirs.find(new_dir) != dirs.end()) {
-                        std::cout << "Key [" << new_dir << "] found\n";
+                    while (dirs.find(new_dir) != dirs.end()) {
+                        new_dir.append("*"); //avoid collisions
                     }
                     dirs[new_dir] = 0;
                     break;
@@ -49,10 +51,14 @@ void day7Part1(const list<string> &inputStringList) {
             }
         }
     }
+    return dirs;
+}
+
+void day7Part1(const list<string> &inputStringList) {
+    map<string, int> dirs = getDirectorySizeMapping(inputStringList);
     int sumOfDirsLessThanOneHunderedThousand = 0;
     for (auto const &tup: dirs) {
 
-        cout << tup.first << " : " << tup.second << "\n";
         if (tup.second < 100000) {
             sumOfDirsLessThanOneHunderedThousand += tup.second;
         }
@@ -63,11 +69,18 @@ void day7Part1(const list<string> &inputStringList) {
 }
 
 void day7Part2(const list<string> &inputStringList) {
-    for (const string &line: inputStringList) {
-        if (!line.empty()) {
+    map<string, int> dirs = getDirectorySizeMapping(inputStringList);
+    int totalDiskSpace = 70000000;
+    int unusedDiskSpace = totalDiskSpace - dirs["/"];
+    int minDeleted = 30000000 - unusedDiskSpace;
+    int smallestDeleted = totalDiskSpace;
+    for (auto const &tup: dirs) {
 
+        if (tup.second > minDeleted and tup.second < smallestDeleted) {
+            smallestDeleted = tup.second;
         }
     }
+    cout << "Sum of total sizes of directories less than 100000: " << smallestDeleted << "\n";
 }
 
 int mainDay7() {
