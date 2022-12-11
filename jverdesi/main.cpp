@@ -9,6 +9,7 @@
 #include "Day5/SupplyStacks.h"
 #include "Day6/TuningTrouble.h"
 #include "Day7/NoSpaceLeftOnDevice.h"
+#include "Day8/TreetopTreeHouse.h"
 
 void print_all_answers(){
     mainDay1();
@@ -18,6 +19,7 @@ void print_all_answers(){
     mainDay5();
     mainDay6();
     mainDay7();
+    mainDay8();
 
 
 }
