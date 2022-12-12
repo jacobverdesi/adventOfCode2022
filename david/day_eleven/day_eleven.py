@@ -1,4 +1,5 @@
 from typing import List
+from functools import reduce
 
 
 class Monkey(object):
@@ -12,64 +13,62 @@ class Monkey(object):
         self.test_response_false = int(monkey_input[5].split(" ")[-1])
         self.inspections = 0
 
-    def __str__(self):
 
-        return str(
-            (
-                self.monkey,
-                self.items,
-                self.operation,
-                self.divisible_by,
-                self.test_response_true,
-                self.test_response_false,
-                self.inspections
-            )
-        )
-
-
-def operation_mapper(input: int, op: list) -> int:
-    old = input 
-    new = old if op[-1] =="old" else int(op[-1])
+def operation_mapper(input: int, op: list, divisor_product: int) -> int:
+    old = input
+    new = old if op[-1] == "old" else int(op[-1])
     if op[1] == "+":
         return old + new
     if op[1] == "*":
+        old = old % divisor_product
         return old * new
 
 
-def update_monkey_items(monkey: Monkey, monkeys: List[Monkey]):
+def update_monkey_items(
+    monkey: Monkey, monkeys: List[Monkey], divisor_product: int, divide=True
+):
     for i in range(len(monkey.items)):
-        monkey.inspections +=1
+        monkey.inspections += 1
         item = monkey.items[i]
-        item = operation_mapper(item, monkey.operation)
-        item //=3
-        if item%monkey.divisible_by==0:
+        item = operation_mapper(item, monkey.operation, divisor_product)
+        if divide:
+            item //= 3
+        if item % monkey.divisible_by == 0:
             monkeys[monkey.test_response_true].items.append(item)
         else:
             monkeys[monkey.test_response_false].items.append(item)
     monkey.items = []
 
 
-def execute_rounds(monkeys:List[Monkey], rounds:int, func: any)->List[Monkey]:
+def execute_rounds(
+    monkeys: List[Monkey], rounds: int, func: any, divide: bool
+) -> List[Monkey]:
+    divisor_product = reduce((lambda x, y: x * y), [m.divisible_by for m in monkeys])
     for _ in range(rounds):
         for monkey in monkeys:
-            func(monkey, monkeys)
+            func(monkey, monkeys, divisor_product, divide)
     return monkeys
 
 
-def question_one(monkeys: List[Monkey], rounds: int, update_monkey_items:any=update_monkey_items):
-    monkeys = execute_rounds(monkeys, rounds, update_monkey_items)
+def get_max_inspections_product(
+    monkeys: List[Monkey], rounds: int, divide: bool = True
+):
+    monkeys = execute_rounds(monkeys, rounds, update_monkey_items, divide)
     last_two = sorted([i.inspections for i in monkeys])[-2:]
     return last_two[0] * last_two[1]
 
 
 if __name__ == "__main__":
-    with open("./sample.txt", "r") as readfile:
+    with open("./day_eleven.txt", "r") as readfile:
         content = readfile.read()
 
     monkeys = sorted(
         [Monkey(i.split("\n")) for i in content.split("\n\n")], key=lambda x: x.monkey
     )
 
-    print(question_one(monkeys, 20))
+    print(get_max_inspections_product(monkeys, 20))
 
-    # print(question_one(monkeys, 10000, update_monkey_items_2))
+    monkeys = sorted(
+        [Monkey(i.split("\n")) for i in content.split("\n\n")], key=lambda x: x.monkey
+    )
+    print(get_max_inspections_product(monkeys, 10000, False))
