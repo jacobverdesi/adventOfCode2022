@@ -32,6 +32,12 @@ void printMonkey(Monkey &monkey) {
         cout << items << ", ";
     cout << "\n";
 }
+void countMonkeys(vector<Monkey> &monkeyList,vector<int> &monkeyInspectionTimes) {
+    for(int i=0;i<monkeyList.size();i++){
+        monkeyInspectionTimes[i]+=(int)monkeyList[i].items.size();
+    }
+
+}
 
 void parseInput(const list<string> &inputStringList, vector<Monkey> &monkeyList) {
     int rowIdx = 0;
@@ -102,10 +108,11 @@ void evalWorryLevel(int &monkey_item, char operation, const string &r_operator) 
 
 }
 
-void monkeyRound(vector<Monkey> &monkeyList) {
+void monkeyRound(vector<Monkey> &monkeyList,vector<int> &monkeyInspectionTimes) {
     for (auto &curr_monkey: monkeyList) {
       //  cout << "Monkey " << curr_monkey.id << ":\n";
         for (auto monkey_item: curr_monkey.items) {
+            monkeyInspectionTimes[curr_monkey.id]++;
          //   cout << "Monkey inspects an item with a worry level of " << monkey_item << ".\n";
             evalWorryLevel(monkey_item, curr_monkey.operation, curr_monkey.r_operator);
           //  cout << "New item value: " << monkey_item << ".\n";
@@ -134,18 +141,23 @@ void day11Part1(const list<string> &inputStringList) {
     int max_rounds = 20;
     int curr_round=1;
     vector<Monkey> monkeyList;
+    vector<int> monkeyInspectionTimes(8,0);
     parseInput(inputStringList, monkeyList);
-    for (auto monkey: monkeyList)
-        printMonkey(monkey);
-
+//    for (auto monkey: monkeyList)
+//        printMonkey(monkey);
     while (curr_round < max_rounds+1) {
-        monkeyRound(monkeyList);
-        cout<<"Round: "<<curr_round<<'\n';
-        for (auto monkey: monkeyList)
-            printMonkey(monkey);
+        monkeyRound(monkeyList,monkeyInspectionTimes);
+
+//        cout<<"Round: "<<curr_round<<'\n';
+//        for (auto monkey: monkeyList)
+//            printMonkey(monkey);
         curr_round++;
 
     }
+    sort(monkeyInspectionTimes.begin(), monkeyInspectionTimes.end(),greater<>());
+
+    cout<<"Monkey buissness score:"<<monkeyInspectionTimes[0]*monkeyInspectionTimes[1]<<"\n";
+
 }
 
 void day11Part2(const list<string> &inputStringList) {
