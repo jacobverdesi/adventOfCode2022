@@ -18,7 +18,7 @@ using namespace std;
 class Monkey {
 public:
     int id{};
-    vector<int> items;
+    vector<long> items;
     string r_operator;
     char operation{};
     int test_divisible{};
@@ -88,8 +88,8 @@ void parseInput(const list<string> &inputStringList, vector<Monkey> &monkeyList)
     }
 }
 
-void evalWorryLevel(int &monkey_item, char operation, const string &r_operator) {
-    int r_val;
+void evalWorryLevel(long &monkey_item, char operation, const string &r_operator) {
+    long r_val;
     if (r_operator == "old")
         r_val = monkey_item;
     else
@@ -116,7 +116,7 @@ void monkeyRound(vector<Monkey> &monkeyList,vector<int> &monkeyInspectionTimes) 
          //   cout << "Monkey inspects an item with a worry level of " << monkey_item << ".\n";
             evalWorryLevel(monkey_item, curr_monkey.operation, curr_monkey.r_operator);
           //  cout << "New item value: " << monkey_item << ".\n";
-            monkey_item = floor(monkey_item / 3);
+            //monkey_item = floor(monkey_item / 3);
           //  cout << "New item value /3: " << monkey_item << ".\n";
 
             string isDivisible;
@@ -138,7 +138,7 @@ void monkeyRound(vector<Monkey> &monkeyList,vector<int> &monkeyInspectionTimes) 
 }
 
 void day11Part1(const list<string> &inputStringList) {
-    int max_rounds = 20;
+    int max_rounds = 10000;
     int curr_round=1;
     vector<Monkey> monkeyList;
     vector<int> monkeyInspectionTimes(8,0);
@@ -155,8 +155,10 @@ void day11Part1(const list<string> &inputStringList) {
 
     }
     sort(monkeyInspectionTimes.begin(), monkeyInspectionTimes.end(),greater<>());
-
-    cout<<"Monkey buissness score:"<<monkeyInspectionTimes[0]*monkeyInspectionTimes[1]<<"\n";
+    long m1=monkeyInspectionTimes[0];
+    long m2=monkeyInspectionTimes[1];
+    long sum=m1*m2;
+    cout<<"Monkey buissness score:"<<sum<<"\n";
 
 }
 
