@@ -13,20 +13,6 @@ class Monkey(object):
         self.test_response_false = int(monkey_input[5].split(" ")[-1])
         self.inspections = 0
 
-    def __str__(self):
-
-        return str(
-            (
-                self.monkey,
-                self.items,
-                self.operation,
-                self.divisible_by,
-                self.test_response_true,
-                self.test_response_false,
-                self.inspections,
-            )
-        )
-
 
 def operation_mapper(input: int, op: list, divisor_product: int) -> int:
     old = input
@@ -38,7 +24,9 @@ def operation_mapper(input: int, op: list, divisor_product: int) -> int:
         return old * new
 
 
-def update_monkey_items(monkey: Monkey, monkeys: List[Monkey], divisor_product: int, divide=True):
+def update_monkey_items(
+    monkey: Monkey, monkeys: List[Monkey], divisor_product: int, divide=True
+):
     for i in range(len(monkey.items)):
         monkey.inspections += 1
         item = monkey.items[i]
@@ -52,7 +40,9 @@ def update_monkey_items(monkey: Monkey, monkeys: List[Monkey], divisor_product: 
     monkey.items = []
 
 
-def execute_rounds(monkeys: List[Monkey], rounds: int, func: any, divide:bool) -> List[Monkey]:
+def execute_rounds(
+    monkeys: List[Monkey], rounds: int, func: any, divide: bool
+) -> List[Monkey]:
     divisor_product = reduce((lambda x, y: x * y), [m.divisible_by for m in monkeys])
     for _ in range(rounds):
         for monkey in monkeys:
@@ -60,7 +50,9 @@ def execute_rounds(monkeys: List[Monkey], rounds: int, func: any, divide:bool) -
     return monkeys
 
 
-def get_max_inspections_product(monkeys: List[Monkey], rounds: int, divide:bool=True):
+def get_max_inspections_product(
+    monkeys: List[Monkey], rounds: int, divide: bool = True
+):
     monkeys = execute_rounds(monkeys, rounds, update_monkey_items, divide)
     last_two = sorted([i.inspections for i in monkeys])[-2:]
     return last_two[0] * last_two[1]
