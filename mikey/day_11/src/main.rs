@@ -111,18 +111,12 @@ fn parse_monkey(lines: &[String], current_line: &mut usize) -> Option<Monkey> {
 // == monkey business logic ==
 
 impl Monkey {
-    fn operate(&self, x: u64, divisors_product: u64) -> u64 {
+    fn operate(&self, x: u64) -> u64 {
         match self.operation {
             (Add, Old) => x + x,
             (Add, Number(y)) => x + y,
-            (Multiply, Old) => {
-                let new_x = x % divisors_product;
-                new_x * new_x
-            }
-            (Multiply, Number(y)) => {
-                let new_x = x % divisors_product;
-                new_x * y
-            }
+            (Multiply, Old) => x * x,
+            (Multiply, Number(y)) => x * y,
         }
     }
 
@@ -141,10 +135,11 @@ impl Monkey {
                 .starting_items
                 .pop_front()
                 .expect("starting_items must have items");
-            worry_item = self.operate(worry_item, divisors_product);
+            worry_item = self.operate(worry_item);
             if decrease_worry {
                 worry_item = worry_item / 3;
             }
+            worry_item = worry_item % divisors_product; // chinese remainder thereom
             let target_monkey;
             if self.test(worry_item) {
                 target_monkey = other_monkeys
@@ -161,71 +156,43 @@ impl Monkey {
     }
 }
 
+fn run_rounds(lines: &Vec<String>, decrease_worry: bool, number_rounds: usize) -> u64 {
+    let mut current_line = 0;
+    let mut monkeys = Vec::<Monkey>::new();
+
+    while current_line < lines.len() {
+        if let Some(monkey) = parse_monkey(lines.as_slice(), &mut current_line) {
+            monkeys.push(monkey)
+        }
+    }
+
+    let divisors_product = monkeys.iter().map(|m| m.test_divisible_by).product::<u64>();
+
+    for _ in 0..number_rounds {
+        for i in 0..monkeys.len() {
+            let mut monkey = monkeys[i].clone();
+            monkey.take_turn(&mut monkeys, decrease_worry, divisors_product);
+            monkeys[i] = monkey;
+        }
+    }
+
+    let mut times_inspected = monkeys
+        .iter()
+        .map(|monkey| monkey.times_inspected)
+        .collect::<Vec<_>>();
+    times_inspected.sort();
+    times_inspected.reverse();
+    times_inspected[0] * times_inspected[1]
+}
+
 fn main() -> std::io::Result<()> {
     let path = common::get_first_arg("usage: day_11 [path]")?;
     let lines = common::open_lines(&path)?
         .map(|line| line.expect("error parsing line"))
         .collect::<Vec<_>>();
 
-    {
-        // part 1
-        let mut current_line = 0;
-        let mut monkeys = Vec::<Monkey>::new();
-
-        while current_line < lines.len() {
-            if let Some(monkey) = parse_monkey(lines.as_slice(), &mut current_line) {
-                monkeys.push(monkey)
-            }
-        }
-
-        let divisors_product = monkeys.iter().map(|m| m.test_divisible_by).product::<u64>();
-
-        for _ in 0..20 {
-            for i in 0..monkeys.len() {
-                let mut monkey = monkeys[i].clone();
-                monkey.take_turn(&mut monkeys, true, divisors_product);
-                monkeys[i] = monkey;
-            }
-        }
-
-        let mut times_inspected = monkeys
-            .iter()
-            .map(|monkey| monkey.times_inspected)
-            .collect::<Vec<_>>();
-        times_inspected.sort();
-        times_inspected.reverse();
-        println!("part one {}", times_inspected[0] * times_inspected[1]);
-    }
-
-    {
-        // part 2
-        let mut current_line = 0;
-        let mut monkeys = Vec::<Monkey>::new();
-
-        while current_line < lines.len() {
-            if let Some(monkey) = parse_monkey(lines.as_slice(), &mut current_line) {
-                monkeys.push(monkey)
-            }
-        }
-
-        let divisors_product = monkeys.iter().map(|m| m.test_divisible_by).product::<u64>();
-
-        for _ in 0..10000 {
-            for i in 0..monkeys.len() {
-                let mut monkey = monkeys[i].clone();
-                monkey.take_turn(&mut monkeys, false, divisors_product);
-                monkeys[i] = monkey;
-            }
-        }
-
-        let mut times_inspected = monkeys
-            .iter()
-            .map(|monkey| monkey.times_inspected)
-            .collect::<Vec<_>>();
-        times_inspected.sort();
-        times_inspected.reverse();
-        println!("part two {}", times_inspected[0] * times_inspected[1]);
-    }
+    println!("part one {}", run_rounds(&lines, true, 20));
+    println!("part two {}", run_rounds(&lines, false, 10000));
 
     Ok(())
 }
