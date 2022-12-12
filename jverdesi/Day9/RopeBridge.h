@@ -1,0 +1,11 @@
+//
+// Created by jacob on 12/11/2022.
+//
+
+#ifndef ADVENTOFCODE22_ROPEBRIDGE_H
+#define ADVENTOFCODE22_ROPEBRIDGE_H
+
+
+int mainDay9();
+
+#endif //ADVENTOFCODE22_ROPEBRIDGE_H

@@ -10,6 +10,7 @@
 #include "Day6/TuningTrouble.h"
 #include "Day7/NoSpaceLeftOnDevice.h"
 #include "Day8/TreetopTreeHouse.h"
+#include "Day9/RopeBridge.h"
 
 void print_all_answers(){
     mainDay1();
@@ -20,11 +21,12 @@ void print_all_answers(){
     mainDay6();
     mainDay7();
     mainDay8();
+    mainDay9();
 
 
 }
 
 int main() {
-print_all_answers();
+    mainDay9();
     return 0;
 }

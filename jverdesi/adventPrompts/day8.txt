@@ -1,7 +1,3 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]Jacob Verdesi 15*
-   0x0000|2022[Calendar][AoC++][Sponsors][Leaderboard][Stats]
-Our sponsors help make Advent of Code possible:
-BJSS - Our people are a team of problem solvers, experienced in evolving technologies and delivering world-class technology solutions.
 --- Day 8: Treetop Tree House ---
 The expedition comes across a peculiar patch of tall trees all planted carefully in a grid. The Elves explain that a previous expedition planted these trees as a reforestation effort. Now, they're curious if this would be a good location for a tree house.
 
