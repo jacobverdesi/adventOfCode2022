@@ -11,6 +11,7 @@
 #include "Day7/NoSpaceLeftOnDevice.h"
 #include "Day8/TreetopTreeHouse.h"
 #include "Day9/RopeBridge.h"
+#include "Day10/CathodeRayTube.h"
 
 void print_all_answers(){
     mainDay1();
@@ -27,6 +28,6 @@ void print_all_answers(){
 }
 
 int main() {
-    mainDay9();
+    mainDay10();
     return 0;
 }

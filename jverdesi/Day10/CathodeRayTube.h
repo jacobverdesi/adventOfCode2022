@@ -1,0 +1,12 @@
+//
+// Created by jverdesi on 12/12/22.
+//
+
+#ifndef ADVENTOFCODE22_CATHODERAYTUBE_H
+#define ADVENTOFCODE22_CATHODERAYTUBE_H
+
+
+int mainDay10();
+
+
+#endif //ADVENTOFCODE22_CATHODERAYTUBE_H
