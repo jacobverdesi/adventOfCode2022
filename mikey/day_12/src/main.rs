@@ -103,11 +103,21 @@ fn main() -> std::io::Result<()> {
         .collect::<Vec<_>>();
 
     let map = build_map(&lines);
-    let mut existing_paths = vec![None; map.heightmap.len()];
+    let mut existing_paths = vec![None; map.heightmap.len()]; // re-use for part 2.
 
     println!(
         "part one {}",
         try_path(map.start, &map, 0, &mut existing_paths).expect("must be a way")
+    );
+    println!(
+        "part two {}",
+        map.heightmap
+            .iter()
+            .enumerate()
+            .filter(|(_, height)| **height == 0)
+            .filter_map(|(idx, _)| { try_path(idx, &map, 0, &mut existing_paths) })
+            .min()
+            .expect("must be a way")
     );
 
     Ok(())
