@@ -132,8 +132,11 @@ void write_board_to_file(const vector<vector<char>> &board, const string &filepa
     if (fileStream.is_open()) {
         for (const auto &row: board) {
             for (auto col: row) {
+                if(col=='.')
+                    fileStream << "\u2591";
+                if(col=='#')
+                    fileStream << "\u2593";
 
-                fileStream << col;
             }
             fileStream << "\n";
         }

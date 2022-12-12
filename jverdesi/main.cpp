@@ -28,6 +28,6 @@ void print_all_answers(){
 }
 
 int main() {
-    mainDay10();
+    mainDay9();
     return 0;
 }
