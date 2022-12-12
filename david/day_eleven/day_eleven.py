@@ -56,7 +56,7 @@ def execute_rounds(monkeys:List[Monkey], rounds:int, func: any)->List[Monkey]:
     return monkeys
 
 
-def question_one(monkeys, rounds, update_monkey_items=update_monkey_items):
+def question_one(monkeys: List[Monkey], rounds: int, update_monkey_items:any=update_monkey_items):
     monkeys = execute_rounds(monkeys, rounds, update_monkey_items)
     last_two = sorted([i.inspections for i in monkeys])[-2:]
     return last_two[0] * last_two[1]
@@ -71,3 +71,5 @@ if __name__ == "__main__":
     )
 
     print(question_one(monkeys, 20))
+
+    # print(question_one(monkeys, 10000, update_monkey_items_2))
