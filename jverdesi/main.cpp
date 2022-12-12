@@ -8,6 +8,9 @@
 #include "Day4/CampCleanup.h"
 #include "Day5/SupplyStacks.h"
 #include "Day6/TuningTrouble.h"
+#include "Day7/NoSpaceLeftOnDevice.h"
+#include "Day8/TreetopTreeHouse.h"
+#include "Day9/RopeBridge.h"
 
 void print_all_answers(){
     mainDay1();
@@ -16,10 +19,14 @@ void print_all_answers(){
     mainDay4();
     mainDay5();
     mainDay6();
+    mainDay7();
+    mainDay8();
+    mainDay9();
+
 
 }
 
 int main() {
-print_all_answers();
+    mainDay9();
     return 0;
 }
