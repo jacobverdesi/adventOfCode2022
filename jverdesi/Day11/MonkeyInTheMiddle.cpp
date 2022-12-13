@@ -18,157 +18,130 @@ using namespace std;
 class Monkey {
 public:
     int id{};
-    vector<long> items;
-    string r_operator;
-    char operation{};
-    int test_divisible{};
-    int throw_to_true{};
-    int throw_to_false{};
+    vector<long long> items;
+    string rOperator;
+    char operation;
+    int testDivisible;
+    int throwToTrue;
+    int throwToFalse;
+
+    explicit Monkey(vector<string> input) {
+        id = input[0][7] - 48;
+        size_t pos;
+        string token;
+        string subLine = input[1].substr(18);
+        while ((pos = subLine.find(',')) < string::npos) {
+            items.push_back(stoi(subLine.substr(0, pos)));
+            subLine.erase(0, pos + 1);
+        }
+        items.push_back(stoi(subLine.substr(0, pos)));
+        int lastDelimiterIndex = (int) input[2].rfind(' ');
+        operation = input[2].substr(lastDelimiterIndex - 1, 1)[0];
+        rOperator = input[2].substr(lastDelimiterIndex + 1);
+        testDivisible = stoi(input[3].substr(input[3].rfind(' ') + 1));
+        throwToTrue = stoi(input[4].substr(input[4].rfind(' ') + 1));
+        throwToFalse = stoi(input[5].substr(input[5].rfind(' ') + 1));
+    }
 };
 
-void printMonkey(Monkey &monkey) {
-    cout << "\tMonkey " << monkey.id << ": ";
-    for (auto items: monkey.items)
-        cout << items << ", ";
-    cout << "\n";
-}
-void countMonkeys(vector<Monkey> &monkeyList,vector<int> &monkeyInspectionTimes) {
-    for(int i=0;i<monkeyList.size();i++){
-        monkeyInspectionTimes[i]+=(int)monkeyList[i].items.size();
+void printMonkeys(vector<Monkey> &monkeyList) {
+    for(const auto& monkey:monkeyList) {
+        cout << "\tMonkey " << monkey.id << ": ";
+        for (const auto &items: monkey.items)
+            cout << items << ", ";
+        cout << "\n";
     }
-
 }
 
 void parseInput(const list<string> &inputStringList, vector<Monkey> &monkeyList) {
     int rowIdx = 0;
-    Monkey tempMonkey;
-    for (string line: inputStringList) {
-        switch (rowIdx % 7) {
-            case 0: {
-                tempMonkey.id = line[7] - 48;
-                break;
-            }
-            case 1: {
-                size_t pos;
-                string token;
-                string sub_line = line.substr(18);
-                while ((pos = sub_line.find(',')) < string::npos) {
-                    tempMonkey.items.push_back(stoi(sub_line.substr(0, pos)));
-                    sub_line.erase(0, pos + 1);
-                }
-                tempMonkey.items.push_back(stoi(sub_line.substr(0, pos)));
-                break;
-            }
-            case 2: {
-                int last_delimiter_index = (int) line.rfind(' ');
-                tempMonkey.operation = line.substr(last_delimiter_index - 1, 1)[0];
-                tempMonkey.r_operator = line.substr(last_delimiter_index + 1);
+    vector<string> monkeyInput;
+    for (const string& line: inputStringList) {
 
-                break;
-            }
-            case 3:
-                tempMonkey.test_divisible = stoi(line.substr(line.rfind(' ') + 1));
-                break;
-            case 4:
-                tempMonkey.throw_to_true = stoi(line.substr(line.rfind(' ') + 1));
-                break;
-            case 5:
-                tempMonkey.throw_to_false = stoi(line.substr(line.rfind(' ') + 1));
-                break;
-            case 6: {
-                Monkey monkey = tempMonkey;
-                monkeyList.push_back(monkey);
-                tempMonkey = Monkey();
-                break;
-            }
-            default:
-                break;
+        if(rowIdx%7==6) {
+            Monkey newMonkey=Monkey(monkeyInput);
+            monkeyList.push_back(newMonkey);
+            monkeyInput.clear();
         }
+        else
+            monkeyInput.push_back(line);
         rowIdx++;
     }
 }
 
-void evalWorryLevel(long &monkey_item, char operation, const string &r_operator) {
-    long r_val;
-    if (r_operator == "old")
-        r_val = monkey_item;
-    else
-        r_val = stoi(r_operator);
 
-    switch (operation) {
-        case '+':
-            monkey_item = monkey_item + r_val;
-            break;
-        case '*':
-            monkey_item = monkey_item * r_val;
-            break;
-        default:
-            break;
+void evalWorryLevel(long long&monkeyItem, char operation, const string &rOperator,int divisorProduct,bool divide) {
+    long long rVal;
+    if (rOperator == "old")
+        rVal = monkeyItem;
+    else
+        rVal = stoi(rOperator);
+    if(operation=='+')
+            monkeyItem = monkeyItem + rVal;
+    if(operation=='*') {
+            monkeyItem = (monkeyItem * rVal) % (divisorProduct/((divide*2)+1));
     }
 
 }
 
-void monkeyRound(vector<Monkey> &monkeyList,vector<int> &monkeyInspectionTimes) {
-    for (auto &curr_monkey: monkeyList) {
-      //  cout << "Monkey " << curr_monkey.id << ":\n";
-        for (auto monkey_item: curr_monkey.items) {
-            monkeyInspectionTimes[curr_monkey.id]++;
-         //   cout << "Monkey inspects an item with a worry level of " << monkey_item << ".\n";
-            evalWorryLevel(monkey_item, curr_monkey.operation, curr_monkey.r_operator);
-          //  cout << "New item value: " << monkey_item << ".\n";
-            //monkey_item = floor(monkey_item / 3);
-          //  cout << "New item value /3: " << monkey_item << ".\n";
+void monkeyRound(vector<Monkey> &monkeyList, vector<long long> &monkeyInspectionTimes,int divisorProduct, bool divide) {
+    for (auto &currMonkey: monkeyList) {
+        for (auto monkeyItem: currMonkey.items) {
+            monkeyInspectionTimes[currMonkey.id]++;
 
-            string isDivisible;
+            evalWorryLevel(monkeyItem, currMonkey.operation, currMonkey.rOperator,divisorProduct,divide);
+            if (divide)
+                monkeyItem = floor(monkeyItem / 3);
             int throw_to;
-            if (monkey_item % curr_monkey.test_divisible != 0) {
-                isDivisible = "not";
-                throw_to = curr_monkey.throw_to_false;
+            if (monkeyItem% currMonkey.testDivisible==0) {
+                throw_to = currMonkey.throwToTrue;
             } else
-                throw_to = curr_monkey.throw_to_true;
+                throw_to = currMonkey.throwToFalse;
 
+            //  cout << "Current worry level is " << isDivisibleStr << " divisible by " << currMonkey.testDivisible << ".\n";
+            monkeyList[throw_to].items.push_back(monkeyItem);
 
-          //  cout << "Current worry level is " << isDivisible << " divisible by " << curr_monkey.test_divisible << ".\n";
-            monkeyList[throw_to].items.push_back(monkey_item);
-
-         //   cout << "Item with worry level " << monkey_item << " is thrown to monkey "<<throw_to<<".\n";
+            //   cout << "Item with worry level " << monkeyItem << " is thrown to monkey "<<throw_to<<".\n";
         }
-        curr_monkey.items.clear();
+        currMonkey.items.clear();
     }
+}
+
+long long getInspectionTimes(int maxRounds, vector<Monkey> &monkeyList, bool divide) {
+    int currRound = 1;
+    vector<long long> monkeyInspectionTimes(monkeyList.size(), 0);
+    int divisorProduct=1;
+    for(const auto& monkay:monkeyList)
+        divisorProduct*=monkay.testDivisible;
+
+    while (currRound < maxRounds + 1) {
+        monkeyRound(monkeyList, monkeyInspectionTimes,divisorProduct, divide);
+       // printMonkeys(monkeyList);
+        currRound++;
+
+    }
+    sort(monkeyInspectionTimes.begin(), monkeyInspectionTimes.end(), greater<>());
+    long long m1 = monkeyInspectionTimes[0];
+    long long m2 = monkeyInspectionTimes[1];
+    return m1 * m2;
 }
 
 void day11Part1(const list<string> &inputStringList) {
-    int max_rounds = 10000;
-    int curr_round=1;
+    int max_rounds = 20;
     vector<Monkey> monkeyList;
-    vector<int> monkeyInspectionTimes(8,0);
     parseInput(inputStringList, monkeyList);
-//    for (auto monkey: monkeyList)
-//        printMonkey(monkey);
-    while (curr_round < max_rounds+1) {
-        monkeyRound(monkeyList,monkeyInspectionTimes);
-
-//        cout<<"Round: "<<curr_round<<'\n';
-//        for (auto monkey: monkeyList)
-//            printMonkey(monkey);
-        curr_round++;
-
-    }
-    sort(monkeyInspectionTimes.begin(), monkeyInspectionTimes.end(),greater<>());
-    long m1=monkeyInspectionTimes[0];
-    long m2=monkeyInspectionTimes[1];
-    long sum=m1*m2;
-    cout<<"Monkey buissness score:"<<sum<<"\n";
+    long long score = getInspectionTimes(max_rounds, monkeyList, true);
+    cout << "Monkey buissness score:" << score << "\n";
 
 }
 
 void day11Part2(const list<string> &inputStringList) {
 
-    for (const string &line: inputStringList) {
-        if (!line.empty()) {
-
-        }
-    }
+    int max_rounds = 10000;
+    vector<Monkey> monkeyList;
+    parseInput(inputStringList, monkeyList);
+    long long score = getInspectionTimes(max_rounds, monkeyList, false);
+    cout << "Monkey buissness score:" << score << "\n";
 
 }
 
