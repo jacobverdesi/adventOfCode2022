@@ -11,6 +11,8 @@
 #include "Day7/NoSpaceLeftOnDevice.h"
 #include "Day8/TreetopTreeHouse.h"
 #include "Day9/RopeBridge.h"
+#include "Day10/CathodeRayTube.h"
+#include "Day11/MonkeyInTheMiddle.h"
 
 void print_all_answers(){
     mainDay1();
@@ -22,11 +24,13 @@ void print_all_answers(){
     mainDay7();
     mainDay8();
     mainDay9();
+    mainDay10();
+    mainDay11();
 
 
 }
 
 int main() {
-    mainDay9();
+    mainDay11();
     return 0;
 }

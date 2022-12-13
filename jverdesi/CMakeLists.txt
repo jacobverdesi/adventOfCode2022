@@ -25,4 +25,4 @@ add_executable(AdventOfCode22
         Day4/CampCleanup.h
         Day5/SupplyStacks.cpp
         Day5/SupplyStacks.h
-        Day6/TuningTrouble.cpp Day6/TuningTrouble.h Day7/NoSpaceLeftOnDevice.cpp Day7/NoSpaceLeftOnDevice.h Day8/TreetopTreeHouse.cpp Day8/TreetopTreeHouse.h Day9/RopeBridge.cpp Day9/RopeBridge.h)
+        Day6/TuningTrouble.cpp Day6/TuningTrouble.h Day7/NoSpaceLeftOnDevice.cpp Day7/NoSpaceLeftOnDevice.h Day8/TreetopTreeHouse.cpp Day8/TreetopTreeHouse.h Day9/RopeBridge.cpp Day9/RopeBridge.h Day10/CathodeRayTube.cpp Day10/CathodeRayTube.h Day11/MonkeyInTheMiddle.cpp Day11/MonkeyInTheMiddle.h)
