@@ -15,12 +15,10 @@ impl Packet {
                 .iter()
                 .zip(ys.iter())
                 .find_map(|(x, y)| x.is_ordered(y))
-                .or_else(|| {
-                    if xs.len() == ys.len() {
-                        None
-                    } else {
-                        Some(xs.len() < ys.len())
-                    }
+                .or(if xs.len() == ys.len() {
+                    None
+                } else {
+                    Some(xs.len() < ys.len())
                 }),
             (x @ Packet::Integer(_), ys @ Packet::List(_)) => {
                 Packet::List(vec![x.clone()]).is_ordered(ys)
@@ -48,13 +46,12 @@ impl Ord for Packet {
     }
 }
 
+// what is the point of this?? apparently a requirement for Ord.
 impl PartialOrd for Packet {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
-
-// parsing foolishness
 
 fn parse_list(line: &str, cursor: &mut usize) -> Vec<Packet> {
     let mut list = Vec::new();
@@ -71,18 +68,22 @@ fn parse_list(line: &str, cursor: &mut usize) -> Vec<Packet> {
     list
 }
 
+fn parse_integer(line: &str, cursor: &mut usize) -> i64 {
+    let len = &line[*cursor..]
+        .chars()
+        .take_while(|c| c.is_ascii_digit())
+        .count();
+    let slice = &line[*cursor..*cursor + len];
+    *cursor += len;
+    str::parse::<i64>(slice).expect("couldn't parse int")
+}
+
 fn parse_packet(line: &str, cursor: &mut usize) -> Packet {
     if &line[*cursor..*cursor + 1] == "[" {
         *cursor += 1;
         Packet::List(parse_list(line, cursor))
     } else {
-        let len = &line[*cursor..]
-            .chars()
-            .take_while(|c| c.is_digit(10))
-            .count();
-        let slice = &line[*cursor..*cursor + len];
-        *cursor += len;
-        Packet::Integer(str::parse::<i64>(slice).expect("couldn't parse int"))
+        Packet::Integer(parse_integer(line, cursor))
     }
 }
 
@@ -95,7 +96,7 @@ fn main() -> std::io::Result<()> {
     let packets = lines
         .iter()
         .filter_map(|line| {
-            if line.len() > 0 {
+            if !line.is_empty() {
                 Some(parse_packet(line, &mut 0))
             } else {
                 None
@@ -114,7 +115,7 @@ fn main() -> std::io::Result<()> {
                 .filter_map(|(i, pair)| {
                     match &pair {
                         &[l, r] => {
-                            if l.is_ordered(&r).expect("unordered pair") {
+                            if l.is_ordered(r).expect("unordered pair") {
                                 Some(i + 1)
                             } else {
                                 None
@@ -133,7 +134,7 @@ fn main() -> std::io::Result<()> {
             Packet::List(vec![Packet::List(vec![Packet::Integer(2)])]),
             Packet::List(vec![Packet::List(vec![Packet::Integer(6)])]),
         ];
-        let mut packets = packets.clone();
+        let mut packets = packets;
         packets.append(&mut signals.clone());
         packets.sort();
         println!(
