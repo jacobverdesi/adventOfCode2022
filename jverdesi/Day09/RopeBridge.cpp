@@ -145,13 +145,13 @@ void write_board_to_file(const vector<vector<char>> &board, const string &filepa
 }
 
 void extra_credit() {
-    string filepathInputData = "../Data/inputDay" + to_string(9) + ".txt";
-    const list<string> &inputStringList = readInputFile(filepathInputData.c_str());
-    vector<int> knotSizes = {2, 4, 8, 16, 32};
-    for(auto knotSize:knotSizes) {
-        string filePath = "../Day9/outputBoards/" + to_string(knotSize) + "Knots.txt";
-        write_board_to_file(visited_tail_board(inputStringList, knotSize), filePath);
-    }
+//    string filepathInputData = "../Data/inputDay" + to_string(9) + ".txt";
+//    const list<string> &inputStringList = readInputFile(filepathInputData.c_str());
+//    vector<int> knotSizes = {2, 4, 8, 16, 32};
+//    for(auto knotSize:knotSizes) {
+//        string filePath = "../Day9/outputBoards/" + to_string(knotSize) + "Knots.txt";
+//        write_board_to_file(visited_tail_board(inputStringList, knotSize), filePath);
+//    }
 
 }
 

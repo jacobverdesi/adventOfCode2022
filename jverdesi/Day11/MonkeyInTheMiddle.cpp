@@ -79,7 +79,11 @@ void evalWorryLevel(long long&monkeyItem, char operation, const string &rOperato
     if(operation=='+')
             monkeyItem = monkeyItem + rVal;
     if(operation=='*') {
-            monkeyItem = (monkeyItem * rVal) % (divisorProduct/((divide*2)+1));
+
+        if (divide)
+            monkeyItem = monkeyItem * rVal;
+        else
+            monkeyItem = (monkeyItem * rVal) % divisorProduct;
     }
 
 }
