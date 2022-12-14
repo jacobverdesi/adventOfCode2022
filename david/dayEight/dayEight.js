@@ -30,6 +30,7 @@ function getTreeRowsAndColumns(treeMap) {
   return [treeRows, treeColumns];
 }
 
+// pt 1
 // adds 'i+j' if is a row input and 'j+i' if it is a column input
 function addToVisibleTrees(visibleTrees, i, j, isRow) {
   if (isRow) {
@@ -74,6 +75,16 @@ function getVisibleTreesFromRows(rows, isRow = true) {
   return visibleTrees;
 }
 
+function getVisibleTrees(treeMap) {
+  const rowsAndColumns = getTreeRowsAndColumns(buildTreeMap(treeMap));
+  const rows = getVisibleTreesFromRows(rowsAndColumns[0]);
+  const columns = getVisibleTreesFromRows(rowsAndColumns[1], false);
+  const visibleTrees = new Set([...rows, ...columns]);
+  return visibleTrees.size;
+}
+
+
+// pt 2
 // adds 'i+j' if is a row input and 'j+i' if it is a column input
 function addToVisibleTreesForTreeHouse(
   visibleTrees,
@@ -146,13 +157,6 @@ function getTreeHouseTreeMap(treeMap) {
   return Math.max(...allSums);
 }
 
-function getVisibleTrees(treeMap) {
-  const rowsAndColumns = getTreeRowsAndColumns(buildTreeMap(treeMap));
-  const rows = getVisibleTreesFromRows(rowsAndColumns[0]);
-  const columns = getVisibleTreesFromRows(rowsAndColumns[1], false);
-  const visibleTrees = new Set([...rows, ...columns]);
-  return visibleTrees.size;
-}
 
 const treeMap = common.textFileToArray("./dayEight.txt");
 
