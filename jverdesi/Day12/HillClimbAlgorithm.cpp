@@ -18,11 +18,13 @@ using namespace std;
 class Point {
 public:
     int x{}, y{}, z{};
-    int heuristic_distance = 0;
+    int g = 0;
+    int h = 0;
+    int f = 0;
     Point *prev = nullptr;
     bool visited = false;
     bool inHeap = false;
-    bool finalPath=false;
+    bool finalPath = false;
 
     explicit Point(int x1, int y1, int z1) {
         x = x1;
@@ -33,7 +35,7 @@ public:
 
 struct pointComparator {
     bool operator()(const Point *a, const Point *b) const {
-        return a->heuristic_distance > b->heuristic_distance;
+        return a->f > b->f;
     }
 };
 
@@ -77,7 +79,7 @@ vector<Point *> getNeighbors(vector<vector<Point>> &map, Point *curr) {
     vector<pair<int, int>> neighbors{make_pair(0, -1), make_pair(-1, 0), make_pair(1, 0), make_pair(0, 1)};
     vector<Point *> validNeighbors;
     for (auto [i, j]: neighbors) {
-        if ((0 <= x + i) and (x + i < width) and (0 <= y + j) and (y + j < height-1)) {
+        if ((0 <= x + i) and (x + i < width) and (0 <= y + j) and (y + j < height - 1)) {
             Point &neighbor = map[y + j][x + i];
             if (neighbor.z <= z + 1)
                 validNeighbors.push_back(&neighbor);
@@ -91,54 +93,61 @@ int heuristic(Point *curr, Point *goal) {
     int dx = abs(curr->x - goal->x);
     int dy = abs(curr->y - goal->y);
     int dz = abs(curr->z - goal->z);
-    int euclidian2D = (int)sqrt(dx * dx + dy * dy);
+    int euclidian2D = (int) sqrt((dx * dx) + (dy * dy));
     int euclidian3D = (int) sqrt(euclidian2D * euclidian2D + dz * dz);
-    return euclidian2D;
+    int city_block = dx + dy;
+    return euclidian3D;
 }
-void printMap(vector<vector<Point>> &map){
-    int pathLength=0;
+
+int getPathLength(vector<vector<Point>> &map) {
+    int pathLength = 0;
+    int numVisited = 0;
     Color::Modifier red(Color::FG_RED);
     Color::Modifier def(Color::FG_DEFAULT);
-    for(const auto& row:map){
-        for(auto point:row){
+    for (const auto &row: map) {
+        for (auto point: row) {
             if (point.visited) {
-                if(point.finalPath) {
+                numVisited++;
+                if (point.finalPath) {
                     pathLength++;
-                    cout<<red<<'*'<<def;
-                }
+                    //cout << red << '*' << def;
+                } //else
+                   // cout << '#';
+                //cout << char(point.z + 97);
 
-                else
-                    cout<< char(point.z+97);
-                    //cout << '#';
-            }
-            else{
-                cout<< char(point.z+97);
+            } else {
+               // cout << char(point.z + 97);
             }
         }
-        cout<<'\n';
+    //    cout << '\n';
     }
-    cout<<"Path length: "<<pathLength<<'\n';
+    return pathLength;
+
+
 }
 
 void astar(vector<vector<Point>> &map, pair<int, int> startPoint, pair<int, int> endPoint) {
     Point *start = &map[startPoint.second][startPoint.first];
     Point *end = &map[endPoint.second][endPoint.first];
+    start->h = heuristic(start, end);
+    start->f = heuristic(start, end);
 
-    start->heuristic_distance = heuristic(start, end);
     vector<Point *> heap;
     make_heap(heap.begin(), heap.end(), pointComparator());
     heap.push_back(start);
-    push_heap(heap.begin(), heap.end());
+    push_heap(heap.begin(), heap.end(), pointComparator());
     while (!heap.empty()) {
+        Point *curr = heap.front();
         pop_heap(heap.begin(), heap.end(), pointComparator());
-        Point *curr = heap.back();
         heap.pop_back();
+
+
         curr->inHeap = false;
         curr->visited = true;
-        if(curr->x==end->x and curr->y==end->y){
-            while (curr->prev!= nullptr){
-                curr->finalPath=true;
-                curr= curr->prev;
+        if (curr->x == end->x and curr->y == end->y) {
+            while (curr->prev != nullptr) {
+                curr->finalPath = true;
+                curr = curr->prev;
             }
             break;
 
@@ -147,36 +156,59 @@ void astar(vector<vector<Point>> &map, pair<int, int> startPoint, pair<int, int>
         vector<Point *>::iterator neighbor;
         for (neighbor = neighborPointers.begin(); neighbor != neighborPointers.end(); neighbor++) {
             //cout << "\tChecking Neighbor (" << (*neighbor)->x << ',' << (*neighbor)->y << ")\n";
-            if (!(*neighbor)->visited and (!(*neighbor)->inHeap)) {
+            if (!(*neighbor)->visited and !(*neighbor)->inHeap) {
                 (*neighbor)->prev = curr;
-                (*neighbor)->heuristic_distance = heuristic(curr, (*neighbor));
+                (*neighbor)->g = curr->g + 1;
+                (*neighbor)->h = heuristic(curr, end);
+                (*neighbor)->f = (*neighbor)->g + (*neighbor)->h;
                 (*neighbor)->inHeap = true;
                 heap.push_back((*neighbor));
-                push_heap(heap.begin(), heap.end(),pointComparator());
+                push_heap(heap.begin(), heap.end(), pointComparator());
+
             }
         }
 
     }
-    printMap(map);
 }
-
+vector<pair<int,int>> getNewStartingPositions(vector<vector<Point>> &map){
+    vector<pair<int,int>> startingPositionList;
+    for(const auto& row:map){
+        for(auto col:row){
+            if(col.z==0)
+                startingPositionList.emplace_back(col.x,col.y);
+        }
+    }
+    return startingPositionList;
+}
 
 
 void day12Part1(const list<string> &inputStringList) {
     auto [map, start, end] = inputMap(inputStringList);
-//    cout << start.first << start.second << " " << end.first << end.second << '\n';
+
     astar(map, start, end);
+    int pathLength = getPathLength(map);
+    cout << "Path length: " << pathLength << '\n';
 
 }
 
 void day12Part2(const list<string> &inputStringList) {
-    int score = 12;
-    for (const string &line: inputStringList) {
-        if (!line.empty()) {
+    auto [map, start, end] = inputMap(inputStringList);
+    int minShortestPathLength=1000;
+    vector<pair<int,int>> newStartingPositions=getNewStartingPositions(map);
+    cout<<"Num starting Positions: "<<newStartingPositions.size()<<'\n';
+    for(auto startingPos: newStartingPositions) {
+        astar(map, startingPos, end);
+        int newLength = getPathLength(map);
+        if(newLength<minShortestPathLength and newLength!=0)
+            minShortestPathLength=newLength;
+        map.clear();
+        auto [newMap, start, end] = inputMap(inputStringList);
+        map=newMap;
 
-        }
     }
-    cout << "Score: " << score << "\n";
+    int pathLength = getPathLength(map);
+    cout << "Path length: " << minShortestPathLength << '\n';
+
 }
 
 int mainDay12() {
