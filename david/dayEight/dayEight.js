@@ -30,6 +30,7 @@ function getTreeRowsAndColumns(treeMap) {
   return [treeRows, treeColumns];
 }
 
+// pt 1
 // adds 'i+j' if is a row input and 'j+i' if it is a column input
 function addToVisibleTrees(visibleTrees, i, j, isRow) {
   if (isRow) {
@@ -82,6 +83,82 @@ function getVisibleTrees(treeMap) {
   return visibleTrees.size;
 }
 
+
+// pt 2
+// adds 'i+j' if is a row input and 'j+i' if it is a column input
+function addToVisibleTreesForTreeHouse(
+  visibleTrees,
+  i,
+  j,
+  isRow,
+  howManyVisible
+) {
+  if (isRow) {
+    if (!visibleTrees.hasOwnProperty(i.toString() + "/" + j.toString())) {
+      visibleTrees[i.toString() + "/" + j.toString()] = [howManyVisible];
+    } else {
+      visibleTrees[i.toString() + "/" + j.toString()].push(howManyVisible);
+    }
+  } else {
+    if (!visibleTrees.hasOwnProperty(j.toString() + "/" + i.toString())) {
+      visibleTrees[j.toString() + "/" + i.toString()] = [howManyVisible];
+    } else {
+      visibleTrees[j.toString() + "/" + i.toString()].push(howManyVisible);
+    }
+  }
+}
+
+function getVisibleTreesFromRowsForTreeHouse(rows, isRow = true, visibleTrees) {
+  for (let i = 1; i < Object.keys(rows).length - 1; i++) {
+    for (let j = 1; j < rows[i].length - 1; j++) {
+      let howManyVisible = 1;
+      let idxToTest = j + 1;
+      if (j < rows[i].length - 2) {
+        while (
+          rows[i][j] > rows[i][idxToTest] &&
+          idxToTest < rows[i].length - 1
+        ) {
+          howManyVisible += 1;
+          idxToTest += 1;
+        }
+      }
+      addToVisibleTreesForTreeHouse(visibleTrees, i, j, isRow, howManyVisible);
+      howManyVisible = 1;
+      idxToTest = j - 1;
+      if (j > 1) {
+        while (rows[i][j] > rows[i][idxToTest] && idxToTest > 0) {
+          howManyVisible += 1;
+          idxToTest -= 1;
+        }
+      }
+      addToVisibleTreesForTreeHouse(visibleTrees, i, j, isRow, howManyVisible);
+    }
+  }
+  return visibleTrees;
+}
+
+function getTreeHouseTreeMap(treeMap) {
+  const rowsAndColumns = getTreeRowsAndColumns(buildTreeMap(treeMap));
+  let visibleTrees = {};
+  let visibleTreesFromRows = getVisibleTreesFromRowsForTreeHouse(
+    rowsAndColumns[0],
+    true,
+    visibleTrees
+  );
+  let visibleTreesFromRowsAndColumns = getVisibleTreesFromRowsForTreeHouse(
+    rowsAndColumns[1],
+    false,
+    visibleTreesFromRows
+  );
+  let allSums = [];
+  for (let k in visibleTreesFromRowsAndColumns) {
+    allSums.push(visibleTrees[k].reduce((x, y) => x * y));
+  }
+  return Math.max(...allSums);
+}
+
+
 const treeMap = common.textFileToArray("./dayEight.txt");
 
 console.log(getVisibleTrees(treeMap));
+console.log(getTreeHouseTreeMap(treeMap));
