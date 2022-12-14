@@ -2,17 +2,18 @@
 // Created by jacob on 12/3/2022.
 //
 
-#include "Day1/CalorieCounting.h"
-#include "Day2/RockPaperScissors.h"
-#include "Day3/RucksackReorganization.h"
-#include "Day4/CampCleanup.h"
-#include "Day5/SupplyStacks.h"
-#include "Day6/TuningTrouble.h"
-#include "Day7/NoSpaceLeftOnDevice.h"
-#include "Day8/TreetopTreeHouse.h"
-#include "Day9/RopeBridge.h"
+#include "Day01/CalorieCounting.h"
+#include "Day02/RockPaperScissors.h"
+#include "Day03/RucksackReorganization.h"
+#include "Day04/CampCleanup.h"
+#include "Day05/SupplyStacks.h"
+#include "Day06/TuningTrouble.h"
+#include "Day07/NoSpaceLeftOnDevice.h"
+#include "Day08/TreetopTreeHouse.h"
+#include "Day09/RopeBridge.h"
 #include "Day10/CathodeRayTube.h"
 #include "Day11/MonkeyInTheMiddle.h"
+#include "Day12/HillClimbAlgorithm.h"
 
 void print_all_answers(){
     mainDay1();
@@ -26,11 +27,12 @@ void print_all_answers(){
     mainDay9();
     mainDay10();
     mainDay11();
-
+    mainDay12();
 
 }
 
 int main() {
-    mainDay11();
+    //print_all_answers();
+    mainDay12();
     return 0;
 }

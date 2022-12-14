@@ -9,6 +9,7 @@
 
 using namespace std;
 
+
 void day0Part1(const list<string> &inputStringList) {
     int score = 0;
     for (const string &line: inputStringList) {

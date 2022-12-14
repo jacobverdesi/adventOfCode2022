@@ -52,9 +52,9 @@ void printCycle(int x_register, int clock_cycle) {
         cout << '\n';
     }
     if (abs(clock_cycle-(row*40) - x_register) < 2)
-        cout << (const char*) u8"\u2593";
+        cout << '#';
     else
-        cout << (const char*) u8"\u2591";
+        cout << '.';
 }
 
 void day10Part2(const list<string> &inputStringList) {
@@ -81,7 +81,6 @@ void day10Part2(const list<string> &inputStringList) {
 
 
 int mainDay10() {
-    //_setmode(_fileno(stdout), _O_U16TEXT); // <=== Windows madness
 
     initDay(10, &day10Part1, &day10Part2);
     return 0;
