@@ -3,7 +3,6 @@ use std::cmp::{max, min};
 use std::collections::HashSet;
 
 type Point = (i64, i64);
-type Line = (Point, Point);
 
 fn parse_point(line: &str, cursor: &mut usize) -> Result<Point, String> {
     let x = parser::int(line, cursor)?;
@@ -60,30 +59,48 @@ impl Iterator for Coords {
 fn drop_sand(
     sand_at: Point,
     occupied_points: &mut HashSet<Point>,
+    has_floor: bool,
     min_x: i64,
     max_x: i64,
     max_y: i64,
 ) -> bool {
     match sand_at {
-        (x, _) if x < min_x => true,
-        (x, _) if x > max_x => true,
-        (_, y) if y > max_y => true,
+        (x, _) if !has_floor && x < min_x => true,
+        (x, _) if !has_floor && x > max_x => true,
+        (_, y) if !has_floor && y > max_y => true,
         (x, y) => {
+            if occupied_points.contains(&(x, y)) {
+                return true;
+            }
+            let at_floor = y == max_y + 1;
             let down = occupied_points.contains(&(x, y + 1));
-            if !down {
-                return drop_sand((x, y + 1), occupied_points, min_x, max_x, max_y);
+            if !down && !at_floor {
+                return drop_sand((x, y + 1), occupied_points, has_floor, min_x, max_x, max_y);
             }
             let down_left = occupied_points.contains(&(x - 1, y + 1));
             let down_right = occupied_points.contains(&(x + 1, y + 1));
 
-            if !down_left {
-                return drop_sand((x - 1, y + 1), occupied_points, min_x, max_x, max_y);
+            if !down_left && !at_floor {
+                return drop_sand(
+                    (x - 1, y + 1),
+                    occupied_points,
+                    has_floor,
+                    min_x,
+                    max_x,
+                    max_y,
+                );
             }
-            if !down_right {
-                return drop_sand((x + 1, y + 1), occupied_points, min_x, max_x, max_y);
+            if !down_right && !at_floor {
+                return drop_sand(
+                    (x + 1, y + 1),
+                    occupied_points,
+                    has_floor,
+                    min_x,
+                    max_x,
+                    max_y,
+                );
             }
 
-            println!("drop at {} {}", x, y);
             occupied_points.insert((x, y));
             return false;
         }
@@ -125,13 +142,29 @@ fn main() -> std::io::Result<()> {
     let max_x = max_x.expect("didn't get max x");
     let max_y = max_y.expect("didn't get max y");
 
-    let mut count = 0;
+    {
+        // part one
+        let mut count = 0;
+        let mut oc1 = occupied_points.clone();
 
-    while !drop_sand((500, 0), &mut occupied_points, min_x, max_x, max_y) {
-        count += 1;
+        while !drop_sand((500, 0), &mut oc1, false, min_x, max_x, max_y) {
+            count += 1;
+        }
+
+        println!("part one: {}", count);
     }
 
-    println!("{}", count);
+    {
+        // part two
+        let mut count = 0;
+        let mut oc2 = occupied_points.clone();
+
+        while !drop_sand((500, 0), &mut oc2, true, min_x, max_x, max_y) {
+            count += 1;
+        }
+
+        println!("part two: {}", count);
+    }
 
     Ok(())
 }
