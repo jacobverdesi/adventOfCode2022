@@ -69,40 +69,41 @@ fn drop_sand(
         (x, _) if !has_floor && x > max_x => true,
         (_, y) if !has_floor && y > max_y => true,
         (x, y) => {
-            if occupied_points.contains(&(x, y)) {
-                return true;
-            }
-            let at_floor = y == max_y + 1;
-            let down = occupied_points.contains(&(x, y + 1));
-            if !down && !at_floor {
-                return drop_sand((x, y + 1), occupied_points, has_floor, min_x, max_x, max_y);
-            }
-            let down_left = occupied_points.contains(&(x - 1, y + 1));
-            let down_right = occupied_points.contains(&(x + 1, y + 1));
+            let center = !occupied_points.contains(&(x, y));
+            let down = !occupied_points.contains(&(x, y + 1));
+            let down_left = !occupied_points.contains(&(x - 1, y + 1));
+            let down_right = !occupied_points.contains(&(x + 1, y + 1));
+            let at_floor = has_floor && y == max_y + 1;
 
-            if !down_left && !at_floor {
-                return drop_sand(
+            if center == false {
+                true
+            } else if at_floor == true {
+                occupied_points.insert((x, y));
+                false
+            } else if down == true {
+                drop_sand((x, y + 1), occupied_points, has_floor, min_x, max_x, max_y)
+            } else if down_left == true {
+                drop_sand(
                     (x - 1, y + 1),
                     occupied_points,
                     has_floor,
                     min_x,
                     max_x,
                     max_y,
-                );
-            }
-            if !down_right && !at_floor {
-                return drop_sand(
+                )
+            } else if down_right == true {
+                drop_sand(
                     (x + 1, y + 1),
                     occupied_points,
                     has_floor,
                     min_x,
                     max_x,
                     max_y,
-                );
+                )
+            } else {
+                occupied_points.insert((x, y));
+                false
             }
-
-            occupied_points.insert((x, y));
-            return false;
         }
     }
 }
@@ -115,19 +116,20 @@ fn main() -> std::io::Result<()> {
     let mut max_x: Option<i64> = None;
     let mut max_y: Option<i64> = None;
 
+    // helper for either initializing or updating the Option<i64> values
+    fn test_set<T: Copy>(p: fn(T, T) -> bool, candidate: T, el: &mut Option<T>) {
+        if el.map(|inner| p(candidate, inner)).unwrap_or(true) {
+            *el = Some(candidate);
+        }
+    }
+
     for line in common::open_lines(&path)?.map(|line| line.expect("error reading line")) {
         let mut prev_point: Option<Point> = None;
         let points = parse_points(&line, &mut 0);
         for point in points {
-            if min_x.map(|x| point.0 < x).unwrap_or(true) {
-                min_x = Some(point.0)
-            }
-            if max_x.map(|x| point.0 > x).unwrap_or(true) {
-                max_x = Some(point.0)
-            }
-            if max_y.map(|y| point.1 > y).unwrap_or(true) {
-                max_y = Some(point.1)
-            }
+            test_set(|a, b| a < b, point.0, &mut min_x);
+            test_set(|a, b| a > b, point.0, &mut max_x);
+            test_set(|a, b| a > b, point.1, &mut max_y);
             if let Some(prev_point) = prev_point {
                 let coords = Coords::new(prev_point, point);
                 for coord in coords {
