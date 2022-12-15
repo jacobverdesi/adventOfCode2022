@@ -14,7 +14,7 @@ fn parse_point(line: &str, cursor: &mut usize) -> Result<Point, String> {
 fn parse_points(line: &str, cursor: &mut usize) -> Vec<Point> {
     parser::sep_by(
         |line, cursor| parser::str(" -> ", line, cursor),
-        |line, cursor| parse_point(line, cursor),
+        parse_point,
         line,
         cursor,
     )
@@ -46,7 +46,7 @@ impl Iterator for Coords {
             self.finished = true;
             Some(self.first)
         } else {
-            let old_first = self.first.clone();
+            let old_first = self.first;
             self.first = (
                 self.first.0 + max(-1, min(1, self.last.0 - self.first.0)),
                 self.first.1 + max(-1, min(1, self.last.1 - self.first.1)),
@@ -75,14 +75,14 @@ fn drop_sand(
             let down_right = !occupied_points.contains(&(x + 1, y + 1));
             let at_floor = has_floor && y == max_y + 1;
 
-            if center == false {
+            if !center {
                 false
-            } else if at_floor == true {
+            } else if at_floor {
                 occupied_points.insert((x, y));
                 true
-            } else if down == true {
+            } else if down {
                 drop_sand((x, y + 1), occupied_points, has_floor, min_x, max_x, max_y)
-            } else if down_left == true {
+            } else if down_left {
                 drop_sand(
                     (x - 1, y + 1),
                     occupied_points,
@@ -91,7 +91,7 @@ fn drop_sand(
                     max_x,
                     max_y,
                 )
-            } else if down_right == true {
+            } else if down_right {
                 drop_sand(
                     (x + 1, y + 1),
                     occupied_points,
