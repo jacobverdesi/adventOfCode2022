@@ -65,9 +65,9 @@ fn drop_sand(
     max_y: i64,
 ) -> bool {
     match sand_at {
-        (x, _) if !has_floor && x < min_x => true,
-        (x, _) if !has_floor && x > max_x => true,
-        (_, y) if !has_floor && y > max_y => true,
+        (x, _) if !has_floor && x < min_x => false,
+        (x, _) if !has_floor && x > max_x => false,
+        (_, y) if !has_floor && y > max_y => false,
         (x, y) => {
             let center = !occupied_points.contains(&(x, y));
             let down = !occupied_points.contains(&(x, y + 1));
@@ -76,10 +76,10 @@ fn drop_sand(
             let at_floor = has_floor && y == max_y + 1;
 
             if center == false {
-                true
+                false
             } else if at_floor == true {
                 occupied_points.insert((x, y));
-                false
+                true
             } else if down == true {
                 drop_sand((x, y + 1), occupied_points, has_floor, min_x, max_x, max_y)
             } else if down_left == true {
@@ -102,14 +102,14 @@ fn drop_sand(
                 )
             } else {
                 occupied_points.insert((x, y));
-                false
+                true
             }
         }
     }
 }
 
 fn main() -> std::io::Result<()> {
-    let path = common::get_first_arg("usage: day_13 [path]")?;
+    let path = common::get_first_arg("usage: day_14 [path]")?;
 
     let mut occupied_points: HashSet<Point> = HashSet::new();
     let mut min_x: Option<i64> = None;
@@ -149,7 +149,7 @@ fn main() -> std::io::Result<()> {
         let mut count = 0;
         let mut oc1 = occupied_points.clone();
 
-        while !drop_sand((500, 0), &mut oc1, false, min_x, max_x, max_y) {
+        while drop_sand((500, 0), &mut oc1, false, min_x, max_x, max_y) {
             count += 1;
         }
 
@@ -161,7 +161,7 @@ fn main() -> std::io::Result<()> {
         let mut count = 0;
         let mut oc2 = occupied_points.clone();
 
-        while !drop_sand((500, 0), &mut oc2, true, min_x, max_x, max_y) {
+        while drop_sand((500, 0), &mut oc2, true, min_x, max_x, max_y) {
             count += 1;
         }
 
