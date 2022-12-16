@@ -29,12 +29,17 @@ where
 }
 
 pub fn int(line: &str, cursor: &mut usize) -> Result<i64, String> {
+    let negative = if char('-', line, cursor).is_ok() {
+        -1
+    } else {
+        1
+    };
     let len = peek_while(|c| c.is_ascii_digit(), line, *cursor);
     let slice = &line[*cursor..*cursor + len];
     match str::parse::<i64>(slice) {
         Ok(s) => {
             *cursor += len;
-            Ok(s)
+            Ok(s * negative)
         }
         Err(_) => Err(format!("expected int, got {}", &line[*cursor..])),
     }
