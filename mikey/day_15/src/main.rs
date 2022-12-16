@@ -74,30 +74,48 @@ fn main() -> std::io::Result<()> {
         // part two
         let mut answer = None;
         let max_coord = 4000000;
-        for y in 0..max_coord {
+        let mut y = 0;
+
+        while y <= max_coord {
             let mut x = 0;
+            let mut y_jump = max_coord;
 
             while x <= max_coord {
                 if occupied.contains(&(x, y)) {
                     x += 1;
                 }
+
                 let mut sensor_tripped = false;
+                let point = (x, y);
+                let mut max_x_distance = 1;
+                let mut max_y_distance = 1;
                 for (sensor, distance) in &sensors {
-                    let point = (x, y);
                     let current_distance = manhattan_distance(*sensor, point);
                     if *distance >= current_distance {
                         sensor_tripped = true;
-                        x += (distance - current_distance) + 1;
+                        let extra_power = *distance - current_distance;
+                        let sensor_x_offset = sensor.0 - x;
+                        let sensor_y_offset = sensor.1 - y;
+                        let next_x_distance =
+                            (sensor_x_offset.abs() + sensor_x_offset) + extra_power;
+                        let next_y_distance =
+                            (sensor_y_offset.abs() + sensor_y_offset) + extra_power;
+                        max_x_distance = std::cmp::max(max_x_distance, next_x_distance);
+                        max_y_distance =
+                            std::cmp::max(max_y_distance, next_y_distance - next_x_distance);
                     }
                 }
                 if !sensor_tripped {
                     answer = Some((x, y));
                     break;
                 }
+                x += max_x_distance;
+                y_jump = std::cmp::min(y_jump, max_y_distance);
             }
             if answer.is_some() {
                 break;
             }
+            y += y_jump;
         }
 
         let answer = answer.expect("didn't get answer");
