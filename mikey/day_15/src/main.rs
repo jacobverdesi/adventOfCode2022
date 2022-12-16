@@ -81,10 +81,6 @@ fn main() -> std::io::Result<()> {
             let mut y_jump = max_coord;
 
             while x <= max_coord {
-                if occupied.contains(&(x, y)) {
-                    x += 1;
-                }
-
                 let mut sensor_tripped = false;
                 let point = (x, y);
                 let mut max_x_distance = 1;
@@ -94,15 +90,12 @@ fn main() -> std::io::Result<()> {
                     if *distance >= current_distance {
                         sensor_tripped = true;
                         let extra_power = *distance - current_distance;
-                        let sensor_x_offset = sensor.0 - x;
-                        let sensor_y_offset = sensor.1 - y;
-                        let next_x_distance =
-                            (sensor_x_offset.abs() + sensor_x_offset) + extra_power;
+                        let offset = (sensor.0 - x, sensor.1 - y);
+                        let next_x_distance = (offset.0.abs() + offset.0) + extra_power;
                         let next_y_distance =
-                            (sensor_y_offset.abs() + sensor_y_offset) + extra_power;
+                            ((offset.1.abs() + offset.1) + extra_power) - next_x_distance;
                         max_x_distance = std::cmp::max(max_x_distance, next_x_distance);
-                        max_y_distance =
-                            std::cmp::max(max_y_distance, next_y_distance - next_x_distance);
+                        max_y_distance = std::cmp::max(max_y_distance, next_y_distance);
                     }
                 }
                 if !sensor_tripped {
