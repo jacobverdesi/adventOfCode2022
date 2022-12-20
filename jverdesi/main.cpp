@@ -14,6 +14,7 @@
 #include "Day10/CathodeRayTube.h"
 #include "Day11/MonkeyInTheMiddle.h"
 #include "Day12/HillClimbAlgorithm.h"
+#include "Day13/DistressSignal.h"
 
 void print_all_answers(){
     mainDay1();
@@ -28,11 +29,12 @@ void print_all_answers(){
     mainDay10();
     mainDay11();
     mainDay12();
+    mainDay13();
 
 }
 
 int main() {
     //print_all_answers();
-    mainDay12();
+    mainDay13();
     return 0;
 }
