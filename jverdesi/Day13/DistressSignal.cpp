@@ -44,6 +44,20 @@ public:
         return subList;
     }
 
+    bool operator==(NestedInteger& other) const
+    {
+        int leftLen = (int) this->subList.size();
+        int rightLen = (int) other.getList().size();
+        if(leftLen!=rightLen or this->val != other.val)
+            return false;
+        for (int i = 0; i < leftLen; i++) {
+          if(!(this->getList()[i]== other.getList()[i]))
+              return false;
+        }
+        return true;
+
+    }
+
 
 };
 
@@ -63,54 +77,52 @@ void printNest(NestedInteger &curr) {
     }
 }
 
-bool compare_signals(NestedInteger &left, NestedInteger &right) {
-    cout << "Compare ";
-    printNest(left);
-    cout << " vs ";
-    printNest(right);
-    cout << '\n';
+int compare_signals(NestedInteger &left, NestedInteger &right) {
+//    cout << "Compare ";
+//    printNest(left);
+//    cout << " vs ";
+//    printNest(right);
+//    cout << '\n';
 
     if (left.isInteger() && right.isInteger()) {
         if (left.getInteger() < right.getInteger()) {
-            cout << "Left side is smaller, so inputs are in the right order\n";
+//            cout << "Left side is smaller, so inputs are in the right order\n";
 
-            return true;
+            return 1;
         } else if (left.getInteger() > right.getInteger()) {
-            cout << "Right side is smaller, so inputs are not in the right order\n";
-
+//            cout << "Right side is smaller, so inputs are not in the right order\n";
+            return 0;
         }
     } else if (left.isInteger()) {
         NestedInteger newLeft;
         newLeft.add(left);
-        if (compare_signals(newLeft, right)) {
-            return true;
-        }
+        return compare_signals(newLeft, right);
     } else if (right.isInteger()) {
         NestedInteger newRight;
         newRight.add(right);
-        if (compare_signals(left, newRight)) {
-            return true;
-        }
+        return compare_signals(left, newRight);
 
     } else {
-
         int leftLen = (int) left.getList().size();
         int rightLen = (int) right.getList().size();
         for (int i = 0; i < leftLen; i++) {
             if (i >= rightLen) {
-                cout << "Right side ran out of items, so inputs are not in the right order\n";
-                return false;
+//                cout << "Right side ran out of items, so inputs are not in the right order\n";
+                return 0;
             }
-            if (compare_signals(left.getList()[i], right.getList()[i]))
-                    return true;
-
+            int retVal = compare_signals(left.getList()[i], right.getList()[i]);
+            if (retVal != -1)
+                return retVal;
 
         }
-        cout << "Left side ran out of items, so inputs are in the right order\n";
-        return true;
+        if (leftLen < rightLen) {
+//            cout << "Left side ran out of items, so inputs are in the right order\n";
+            return 1;
+        }
+
 
     }
-    return false;
+    return -1;
 }
 
 NestedInteger initalize_signal(const string &s, int &i) {
@@ -144,18 +156,24 @@ void day13Part1(const list<string> &inputStringList) {
             int i = 0;
             if (rowIdx % 2 == 0) {
                 signal1 = initalize_signal(line, i);
-                printNest(signal1);
-                cout << '\n';
+//                printNest(signal1);
+//                cout << '\n';
 
             } else {
                 signal2 = initalize_signal(line, i);
-                printNest(signal2);
-                cout << '\n';
 
-                indexSum += compare_signals(signal1, signal2) * rowIdx / 2;
+                bool inOrder = compare_signals(signal1, signal2);
+                indexSum += inOrder * ((rowIdx + 1) / 2);
+//                printNest(signal2);
+//                cout << "\n";
+//                cout << "Row Index: " << (rowIdx + 1) / 2 << " In Order: " << inOrder << "\n";
+//                cout << "==========\n";
+
             }
             rowIdx++;
+
         }
+
     }
     cout << "Score: " << indexSum << "\n";
 
@@ -163,12 +181,35 @@ void day13Part1(const list<string> &inputStringList) {
 
 void day13Part2(const list<string> &inputStringList) {
     int score = 0;
+    vector<NestedInteger>signalList;
     for (const string &line: inputStringList) {
         if (!line.empty()) {
-
+            int i=0;
+            signalList.push_back(initalize_signal(line, i));
         }
     }
-    cout << "Score: " << score << "\n";
+    sort(signalList.begin(),signalList.end(), compare_signals);
+    int index=1;
+    const string d1str="[[2]]";
+    const string d2str="[[6]]";
+    int i=0;
+    int i2=0;
+
+    NestedInteger divider1= initalize_signal(d1str,i);
+    NestedInteger divider2= initalize_signal(d2str,i2);
+    int d1Index=0;
+    int d2Index=0;
+    for(auto signal:signalList){
+        if(divider1==signal)
+            d1Index=index;
+        if(divider2==signal)
+            d2Index=index;
+//        cout<<"Signal index: "<<index<<" Signal: ";
+//        printNest(signal);
+//        cout<<"\n";
+        index++;
+    }
+    cout << "Score: " << d1Index*d2Index << "\n";
 }
 
 int mainDay13() {

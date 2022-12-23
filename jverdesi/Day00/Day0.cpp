@@ -5,7 +5,6 @@
 #include <list>
 #include <iostream>
 #include "../Utils/InitDay.h"
-#include "Day0.h"
 
 using namespace std;
 
