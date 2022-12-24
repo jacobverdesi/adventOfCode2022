@@ -22,7 +22,7 @@ private:
     vector<vector<char>> map;
 
 public:
-    explicit CaveCrossSection(const list<string> &inputStringList,bool isPart2= false) {
+    explicit CaveCrossSection(const list<string> &inputStringList, bool isPart2 = false) {
         vector<int> xList;
         vector<int> yList;
         vector<pair<pair<int, int>, pair<int, int>>> rockLines;
@@ -59,12 +59,12 @@ public:
 
 
         xOffset = *minX;
-        if(isPart2) {
+        if (isPart2) {
             height += 2;
-            width=height*5;
-            xOffset=*minX-width/2;
+            width = height ;
+            xOffset = *minX - width / 2;
 
-            rockLines.emplace_back(make_pair(xOffset,height-1), make_pair(xOffset+width-1,height-1));
+            rockLines.emplace_back(make_pair(xOffset, height - 1), make_pair(xOffset + width - 1, height - 1));
         }
         map = vector(height, vector(width, '.'));
 
@@ -90,12 +90,12 @@ public:
     }
 
     int placeAllSands() {
-        int numPlaced=0;
+        int numPlaced = 0;
         while (placeNewSand()) {
-            cout<<"Sand Num: "<<numPlaced<<'\n';
+         //   cout << "Sand Num: " << numPlaced << '\n';
             numPlaced++;
-
-            printMap();
+//
+//            printMap();
 
         }
 
@@ -107,7 +107,7 @@ public:
         int y = 0;
 
         while (true) {
-            if (y + 1 >= height or x-1<0 or x+1>=width)
+            if (map[y][x]=='o' or y + 1 >= height or x - 1 < 0 or x + 1 >= width)
                 return false;
             char left = map[y + 1][x - 1];
             char down = map[y + 1][x];
@@ -122,15 +122,9 @@ public:
                 y++;
                 x++;
             } else break;
-
-
-
         }
-        map[y][x]='o';
-
-
+        map[y][x] = 'o';
         return true;
-
 
     }
 
