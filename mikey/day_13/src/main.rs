@@ -1,3 +1,4 @@
+use common::parser;
 use std::cmp::Ordering;
 
 #[derive(Eq, PartialEq, Clone, Debug)]
@@ -53,38 +54,25 @@ impl PartialOrd for Packet {
     }
 }
 
-fn parse_list(line: &str, cursor: &mut usize) -> Vec<Packet> {
-    let mut list = Vec::new();
-
-    while &line[*cursor..*cursor + 1] != "]" {
-        let item = parse_packet(line, cursor);
-        list.push(item);
-        if &line[*cursor..*cursor + 1] == "," {
-            *cursor += 1;
-        }
-    }
-
-    *cursor += 1;
-    list
+fn parse_list(line: &str, cursor: &mut usize) -> Result<Vec<Packet>, String> {
+    parser::char('[', line, cursor)?;
+    let list = parser::sep_by(
+        |line, cursor| parser::str(",", line, cursor),
+        |line, cursor| parse_packet(line, cursor),
+        line,
+        cursor,
+    );
+    parser::char(']', line, cursor)?;
+    Ok(list)
 }
 
-fn parse_integer(line: &str, cursor: &mut usize) -> i64 {
-    let len = &line[*cursor..]
-        .chars()
-        .take_while(|c| c.is_ascii_digit())
-        .count();
-    let slice = &line[*cursor..*cursor + len];
-    *cursor += len;
-    str::parse::<i64>(slice).expect("couldn't parse int")
-}
-
-fn parse_packet(line: &str, cursor: &mut usize) -> Packet {
-    if &line[*cursor..*cursor + 1] == "[" {
-        *cursor += 1;
-        Packet::List(parse_list(line, cursor))
-    } else {
-        Packet::Integer(parse_integer(line, cursor))
-    }
+fn parse_packet(line: &str, cursor: &mut usize) -> Result<Packet, String> {
+    parser::try_or(
+        |line, cursor| parse_list(line, cursor).map(|list| Packet::List(list)),
+        |line, cursor| parser::int(line, cursor).map(|int| Packet::Integer(int)),
+        line,
+        cursor,
+    )
 }
 
 fn main() -> std::io::Result<()> {
@@ -97,7 +85,7 @@ fn main() -> std::io::Result<()> {
         .iter()
         .filter_map(|line| {
             if !line.is_empty() {
-                Some(parse_packet(line, &mut 0))
+                Some(parse_packet(line, &mut 0).expect("couldn't parse packet"))
             } else {
                 None
             }

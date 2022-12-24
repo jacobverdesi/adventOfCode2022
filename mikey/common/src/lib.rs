@@ -2,6 +2,8 @@ use std::env;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, Error, ErrorKind, Lines};
 
+pub mod parser;
+
 pub struct Fail {
     pub message: String,
 }
