@@ -15,6 +15,7 @@
 #include "Day11/MonkeyInTheMiddle.h"
 #include "Day12/HillClimbAlgorithm.h"
 #include "Day13/DistressSignal.h"
+#include "Day14/RegolithReservoir.h"
 
 void print_all_answers(){
     mainDay1();
@@ -35,6 +36,6 @@ void print_all_answers(){
 
 int main() {
     //print_all_answers();
-    mainDay13();
+    mainDay14();
     return 0;
 }
