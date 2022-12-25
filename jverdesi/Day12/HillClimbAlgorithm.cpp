@@ -1,7 +1,7 @@
 ﻿//
 // Created by jacob on 12/13/21222.
 //
-#include <windows.h>
+//#include <windows.h>
 
 #include <string>
 #include <list>
@@ -212,7 +212,7 @@ void day12Part2(const list<string> &inputStringList) {
 }
 
 int mainDay12() {
-    system(("chcp "s + std::to_string(CP_UTF8)).c_str());
+    //system(("chcp "s + std::to_string(CP_UTF8)).c_str());
 
     initDay(12, &day12Part1, &day12Part2);
     return 0;

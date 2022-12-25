@@ -1,17 +1,14 @@
-//
-// Created by jacob on 12/4/2022.
-//
+
 #include <string>
 #include <list>
 #include <iostream>
 #include "../Utils/InitDay.h"
-#include "Day0.h"
 
 using namespace std;
 
 
 void day0Part1(const list<string> &inputStringList) {
-    int score = 0;
+    int score = -1;
     for (const string &line: inputStringList) {
         if (!line.empty()) {
 
@@ -22,7 +19,7 @@ void day0Part1(const list<string> &inputStringList) {
 }
 
 void day0Part2(const list<string> &inputStringList) {
-    int score = 0;
+    int score = -1;
     for (const string &line: inputStringList) {
         if (!line.empty()) {
 

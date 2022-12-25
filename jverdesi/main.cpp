@@ -14,6 +14,9 @@
 #include "Day10/CathodeRayTube.h"
 #include "Day11/MonkeyInTheMiddle.h"
 #include "Day12/HillClimbAlgorithm.h"
+#include "Day13/DistressSignal.h"
+#include "Day14/RegolithReservoir.h"
+#include "Day15/BeaconExclusionZone.h"
 
 void print_all_answers(){
     mainDay1();
@@ -28,11 +31,15 @@ void print_all_answers(){
     mainDay10();
     mainDay11();
     mainDay12();
+    mainDay13();
+    mainDay14();
+    mainDay15();
+
 
 }
 
 int main() {
     //print_all_answers();
-    mainDay12();
+    mainDay15();
     return 0;
 }
