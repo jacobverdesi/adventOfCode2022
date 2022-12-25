@@ -16,6 +16,7 @@
 #include "Day12/HillClimbAlgorithm.h"
 #include "Day13/DistressSignal.h"
 #include "Day14/RegolithReservoir.h"
+#include "Day15/BeaconExclusionZone.h"
 
 void print_all_answers(){
     mainDay1();
@@ -31,11 +32,14 @@ void print_all_answers(){
     mainDay11();
     mainDay12();
     mainDay13();
+    mainDay14();
+    mainDay15();
+
 
 }
 
 int main() {
     //print_all_answers();
-    mainDay14();
+    mainDay15();
     return 0;
 }

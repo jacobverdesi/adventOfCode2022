@@ -36,4 +36,4 @@ add_executable(AdventOfCode22
         Day10/CathodeRayTube.cpp
         Day10/CathodeRayTube.h
         Day11/MonkeyInTheMiddle.cpp
-        Day11/MonkeyInTheMiddle.h Day09/RopeBridge.cpp Day12/HillClimbAlgorithm.cpp Day12/HillClimbAlgorithm.h Utils/ColorMod.cpp Utils/ColorMod.h Day13/DistressSignal.cpp Day13/DistressSignal.h Day14/RegolithReservoir.cpp Day14/RegolithReservoir.h Utils/tokenizer.cpp Utils/tokenizer.h)
+        Day11/MonkeyInTheMiddle.h Day09/RopeBridge.cpp Day12/HillClimbAlgorithm.cpp Day12/HillClimbAlgorithm.h Utils/ColorMod.cpp Utils/ColorMod.h Day13/DistressSignal.cpp Day13/DistressSignal.h Day14/RegolithReservoir.cpp Day14/RegolithReservoir.h Utils/tokenizer.cpp Utils/tokenizer.h Day15/BeaconExclusionZone.cpp Day15/BeaconExclusionZone.h)
