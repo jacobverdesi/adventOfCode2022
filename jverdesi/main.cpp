@@ -17,6 +17,7 @@
 #include "Day13/DistressSignal.h"
 #include "Day14/RegolithReservoir.h"
 #include "Day15/BeaconExclusionZone.h"
+#include "Day16/ProboscideaVolcanium.h"
 
 void print_all_answers(){
     mainDay1();
@@ -34,12 +35,13 @@ void print_all_answers(){
     mainDay13();
     mainDay14();
     mainDay15();
+    mainDay16();
 
 
 }
 
 int main() {
     //print_all_answers();
-    mainDay15();
+    mainDay16();
     return 0;
 }
